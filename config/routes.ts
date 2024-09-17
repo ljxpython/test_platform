@@ -55,6 +55,11 @@ export default [
         name: "spec",
         component: "./Goods/Spec",
       },
+      {
+        path: "/goods/test",
+        name: "test",
+        component: "./Goods/test",
+      }
       
       
       

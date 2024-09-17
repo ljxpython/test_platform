@@ -136,7 +136,7 @@ const Login: React.FC = () => {
       // const { initialState, loading, error, refresh, setInitialState } = useModel('@@initialState');
       // console.log(initialState);
       // debugger ;
-      if (msg.data.success === true) {
+      if (msg.success === true) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',

@@ -5,6 +5,7 @@ export default {
   'menu.goods.add': '添加商品',
   'menu.goods.category': '商品分类',
   'menu.goods.spec': '商品品类',
+  'menu.goods.test': '测试',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',
