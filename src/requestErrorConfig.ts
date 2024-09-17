@@ -88,16 +88,24 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
+      console.log('request interceptor: ', config);
       // 存储token
       const token = window.localStorage.getItem('token');
-      
-      console.log('token', token);
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
+      // 如果本地的token存在，那么把这个值写入到请求头中
+      if (token) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `${token}`,
+        }
       }
+        // console.log('request interceptor: ', config);
+      
+      // console.log('token', token);
+      // config.headers = {
+      //   ...config.headers,
+      //   Authorization: `Bearer ${token}`,
+      // }
       // 拦截请求配置，进行个性化处理。
-      console.log('request interceptor: ', config);
       // 不需要下面加入的token，可以注释掉
       // const url = config?.url?.concat('?token = 123');
       const url = config?.url;
@@ -108,6 +116,12 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response) => {
+      console.log('response interceptor: ', response);
+      // 如果存在response.headers.authorization,那么把这个值写入到本地中
+      if (response.headers.authorization) {
+        window.localStorage.setItem('token', response.headers.authorization);
+      }
+
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
 

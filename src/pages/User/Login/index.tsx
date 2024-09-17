@@ -107,6 +107,7 @@ const Login: React.FC = () => {
   const intl = useIntl();
 
   const fetchUserInfo = async () => {
+    // 下面的语法解释,调用queryCurrentUser接口,查找当前的用户,将这个状态更新到initialState中的currentUser字段里面
     const userInfo = await initialState?.fetchUserInfo?.();
     console.log(userInfo);
     if (userInfo) {
@@ -124,12 +125,18 @@ const Login: React.FC = () => {
       // 登录
       const msg = await login({ ...values, type });
       console.log(msg);
+      console.log(msg.data);
+      // const headers = msg.headers; // 这个取决于你的 request 实现
+      // console.log('响应头:', headers);
       // 存好token,暂时回调没有token字段,先用type代替,后面修改
-      window.localStorage.setItem('token', msg.type);
+      // window.localStorage.setItem('token', msg.type);
       // 存好用户信息
       window.localStorage.setItem('userInfo', JSON.stringify(msg.data));
-      console.log(msg.type);
-      if (msg.status === 'ok') {
+      console.log(msg.data.success);
+      // const { initialState, loading, error, refresh, setInitialState } = useModel('@@initialState');
+      // console.log(initialState);
+      // debugger ;
+      if (msg.data.success === true) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -140,7 +147,7 @@ const Login: React.FC = () => {
         history.push(urlParams.get('redirect') || '/');
         return;
       }
-      console.log(msg);
+      // console.log(msg);
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
