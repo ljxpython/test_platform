@@ -14,17 +14,35 @@ declare namespace GoodsAPI {
         current?: number;
     };
     // 商品查询结果
+    // type GoodsResult = {
+    //     id?: number;
+    //     name?: string;
+    //     type?: GoodsType;
+    //     subType?: GoodsSubType;
+    //     status?: GoodsStatus;
+    //     createdAt?: string;
+    //     updatedAt?: string;
+    //     list;
+    //     current?: number,
+    //     pageSize?: number,
+    //     total?: number,
+    // };
+
+    type GoodList = {
+	description: string;
+	id: number;
+	image?: any;
+	name: string;
+	price: number;
+	status: string;
+	subtype: string;
+	type: string;
+}
+
     type GoodsResult = {
-        id?: number;
-        name?: string;
-        type?: GoodsType;
-        subType?: GoodsSubType;
-        status?: GoodsStatus;
-        createdAt?: string;
-        updatedAt?: string;
-        list;
-        current?: number,
-        pageSize?: number,
-        total?: number,
-    };
+	current: number;
+	list: GoodList[];
+	pageSize: number;
+	total: number;
+}
 }

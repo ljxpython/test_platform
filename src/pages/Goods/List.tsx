@@ -1,15 +1,16 @@
 import { PageContainer } from '@ant-design/pro-components';
 import type { TableProps } from 'antd';
 import { Button, Card, Col, Form, Input, Row, Select, Space, Table, Tag, theme } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getGoodsList } from '@/services/goods/good';
 
 const { Option } = Select;
 interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  key?: string;
+  name?: string;
+  description?: string;
+  price?: number;
+  status?: number;
 }
 
 const columns: TableProps<DataType>['columns'] = [
@@ -21,31 +22,21 @@ const columns: TableProps<DataType>['columns'] = [
   },
   {
     title: '商品描述',
-    dataIndex: 'age',
-    key: 'age',
+    dataIndex: 'desc',
+    key: 'desc',
   },
   {
     title: '商品价格',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'price',
+    key: 'price',
   },
   {
     title: '商品状态',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
+    key: 'status',
+    dataIndex: 'status',
+    render: (_, {  }) => (  // 自定义列表的数据,可以传节点
       <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
+       test
       </>
     ),
   },
@@ -85,10 +76,26 @@ const data: DataType[] = [
   },
 ];
 
+
 function List() {
   const { token } = theme.useToken();
   const [form] = Form.useForm();
   const [expand, setExpand] = useState(false);
+  const [params, setParams] = useState<GoodsAPI.GoodsParams>({
+    pageSize: 10,
+    current: 1,
+  });
+  const [data, setData] = useState<GoodsAPI.GoodList[]>([]);
+
+  useEffect(() => {
+    // 获取商品列表数据
+    ;( async () => {
+      const data  = await getGoodsList(params);
+      console.log('data', data);
+      setData(data.list);
+    })();
+    
+  }, []);
 
   return (
     <PageContainer title="商品列表">
