@@ -45,4 +45,9 @@ declare namespace GoodsAPI {
 	pageSize: number;
 	total: number;
 }
+
+    type SearchParams = {
+        productType?: string | undefined;
+        search?:string | undefined;
+    }
 }
