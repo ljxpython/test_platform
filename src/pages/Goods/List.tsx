@@ -3,9 +3,11 @@ import type { TableProps } from 'antd';
 import { Button, Card, Col, Form, Input, Row, Select, Space, Table, Tag, theme } from 'antd';
 import { useState, useEffect } from 'react';
 import { getGoodsList } from '@/services/goods/good';
+import { history } from '@umijs/max';
 
 const { Option } = Select;
 interface DataType {
+  id?: number;
   key?: string;
   name?: string;
   description?: string;
@@ -14,6 +16,11 @@ interface DataType {
 }
 
 const columns: TableProps<DataType>['columns'] = [
+  {
+    title: '商品ID',
+    dataIndex: 'id',
+    key: 'id',
+  },
   {
     title: '商品名称',
     dataIndex: 'name',
@@ -152,7 +159,7 @@ function List() {
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Button type="primary" htmlType="submit" >
+              <Button type="primary" htmlType="submit">
                 查询
               </Button>
               <Button
@@ -163,19 +170,31 @@ function List() {
               >
                 重置
               </Button>
+              <Button type="primary" onClick={() => history.push('/goods/addgood')}>
+                添加商品
+              </Button>
             </Col>
           </Row>
         </Form>
       </Card>
       <Card style={{ marginTop: 16 }}>
-        <Table rowKey={(record) => record.id} columns={columns} dataSource={data} pagination={{total:total, pageSize: 10,onChange: (page, pageSize) => {
-         setParams({
-            ...params,
-            current: page,
-            pageSize,
-         })
-        }
-        }} />
+        <Table
+          rowKey={(record) => record.id}
+          columns={columns}
+          dataSource={data}
+          pagination={{
+            total: total,
+            pageSize: 10,
+            onChange: (page, pageSize) => {
+              setParams({
+                ...params,
+                current: page,
+                pageSize,
+              });
+            },
+            showTotal: (total) => `共 ${total} 条`, // 嵌入 showTotal
+          }}
+        />
       </Card>
     </PageContainer>
   );

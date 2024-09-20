@@ -51,6 +51,12 @@ export default [
         component: "./Goods/List",
       },
       {
+        path: "/goods/addgood",
+        name: "addgood",
+        hideInMenu: true,  // 隐藏菜单
+        component: "./Goods/AddGood",
+      },
+      {
         path: "/goods/spec",
         name: "spec",
         component: "./Goods/Spec",
@@ -59,6 +65,26 @@ export default [
         path: "/goods/test",
         name: "test",
         component: "./Goods/test",
+      },
+      {
+        path: "/goods/proform",
+        name: "proform",
+        component: "./Goods/proform",
+      },
+      {
+        path: "/goods/proform2",
+        name: "proform2",
+        component: "./Goods/proform2",
+      },
+      {
+        path: "/goods/proform3",
+        name: "proform3",
+        component: "./Goods/proform3",
+      },
+      {
+        path: "/goods/table",
+        name: "table",
+        component: "./Goods/table",
       }
       
       
