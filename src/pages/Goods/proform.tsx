@@ -1,6 +1,9 @@
 import { ProForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
 import { Col, Row, Space, message } from 'antd';
 import { useState } from 'react';
+import { useAccess, Access } from 'umi';
+import PageA from './access_demo';
+
 
 type LayoutType = Parameters<typeof ProForm>[0]['layout'];
 const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
@@ -23,8 +26,15 @@ export default () => {
           wrapperCol: { span: 14 },
         }
       : null;
+  const fooData = { 
+    ownerId: '1'
+   };
 
   return (
+    <>
+      <div>
+        <PageA foo={fooData} />
+      </div>
     <ProForm<{
       name: string;
       company?: string;
@@ -86,6 +96,7 @@ export default () => {
         label="合同名称"
         placeholder="请输入名称"
       />
-    </ProForm>
+      </ProForm>
+      </>
   );
 };

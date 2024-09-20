@@ -70,6 +70,7 @@ export default [
         path: "/goods/proform",
         name: "proform",
         component: "./Goods/proform",
+        access: "canTest",
       },
       {
         path: "/goods/proform2",
