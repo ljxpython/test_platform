@@ -16,15 +16,21 @@ const Footer: React.FC = () => {
           blankTarget: true,
         },
         {
-          key: 'github',
-          title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
+          key: '冀ICP备2024082146号',
+          title: '冀ICP备2024082146号',
+          href: 'https://beian.miit.gov.cn',
           blankTarget: true,
         },
         {
-          key: 'Ant Design',
-          title: 'Ant Design',
-          href: 'https://ant.design',
+          key: 'github',
+          title: <GithubOutlined />,
+          href: 'https://github.com/ljxpython?tab=repositories',
+          blankTarget: true,
+        },
+        {
+          key: 'git仓库',
+          title: 'git仓库',
+          href: 'https://github.com/ljxpython/test_palnt',
           blankTarget: true,
         },
       ]}

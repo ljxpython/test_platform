@@ -13,6 +13,7 @@ const loginPath = '/user/login';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
+ * 这个方法只有第一次访问时,才会执行,下面的逻辑是如果跳转到不是登录页面,执行一段代码,如果是登录页面,又会读取一段代码  
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAccess, Access } from 'umi';
+import { request } from 'umi';
 
 const PageA = (props) => {
   const { foo } = props;
