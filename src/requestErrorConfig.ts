@@ -98,6 +98,13 @@ export const errorConfig: RequestConfig = {
           Authorization: `${token}`,
         }
       }
+      // 如果是退出接口,清除用户会话信息
+      console.log(config.url)
+      if (config.url === '/api/user/logout') {
+        localStorage.removeItem('token');
+
+      }
+
         // console.log('request interceptor: ', config);
       
       // console.log('token', token);

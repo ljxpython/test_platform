@@ -4,6 +4,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { Button, Dropdown, Space, Tag } from 'antd';
 import { useRef } from 'react';
 import request from 'umi-request';
+import { useModel } from '@umijs/max';
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -148,8 +149,13 @@ const columns: ProColumns<GithubIssueItem>[] = [
 
 export default () => {
   const actionRef = useRef<ActionType>();
+  const { counter, increment, decrement}  = useModel('countMoudel')
+  console.log(counter, increment, decrement);
+
   return (
+    
     <ProTable<GithubIssueItem>
+
       columns={columns}
       // actionRef={actionRef}
       // cardBordered={false}
@@ -162,9 +168,9 @@ export default () => {
           params,
         });
       }}
-      // editable={{
-      //   type: 'multiple',
-      // }}
+      editable={{
+        type: 'multiple',
+      }}
       // columnsState={{
       //   persistenceKey: 'pro-table-singe-demos',
       //   persistenceType: 'localStorage',
@@ -196,10 +202,10 @@ export default () => {
       //     return values;
       //   },
       // }}
-      // pagination={{
-      //   pageSize: 10,
-      //   onChange: (page) => console.log(page),
-      // }}
+      pagination={{
+        pageSize: 10,
+        onChange: (page) => console.log(page),
+      }}
       dateFormatter="string"
       headerTitle="高级表格"
       toolBarRender={() => [

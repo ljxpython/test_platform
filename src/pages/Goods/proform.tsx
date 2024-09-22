@@ -3,6 +3,9 @@ import { Col, Row, Space, message } from 'antd';
 import { useState } from 'react';
 import { useAccess, Access } from 'umi';
 import PageA from './access_demo';
+import { useModel } from '@umijs/max';
+import { flushSync } from 'react-dom';
+
 
 
 type LayoutType = Parameters<typeof ProForm>[0]['layout'];
@@ -28,12 +31,22 @@ export default () => {
       : null;
   const fooData = { 
     ownerId: '1'
-   };
+  };
+  const { counter, increment, decrement,setCounter,incrementAsync}  = useModel('countMoudel')
+  console.log(counter, increment, decrement);
 
   return (
     <>
       <div>
         <PageA foo={fooData} />
+        <h1>{counter}</h1>
+        <button onClick={increment}>增加</button>
+        <button onClick={decrement}>减少</button>
+        <button onClick={() => { setCounter(counter + 100) }}>增加100</button>
+        <button onClick={incrementAsync}>异步增加100</button>
+        // 使用flushSync 同步代码
+        <button onClick={() => { flushSync(() => { setCounter(counter + 100) }) }}>增加100</button>
+        
       </div>
     <ProForm<{
       name: string;

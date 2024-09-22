@@ -11,6 +11,7 @@ export default {
   'menu.goods.proform2': '高级表单2',
   'menu.goods.proform3': '高级表单3',
   'menu.goods.table': '表格',
+  'menu.goods.protable': 'protable的使用',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',

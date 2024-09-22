@@ -41,7 +41,7 @@ declare namespace GoodsAPI {
 
     type GoodsResult = {
 	current: number;
-	list: GoodList[];
+	data: GoodList[];
 	pageSize: number;
 	total: number;
 }

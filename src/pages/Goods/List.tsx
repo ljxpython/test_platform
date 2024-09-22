@@ -116,7 +116,7 @@ function List() {
     ;( async () => {
       const data  = await getGoodsList(params);
       console.log('data', data);
-      setData(data.list);
+      setData(data.data);
       setTotal(data.total);
     })();
     

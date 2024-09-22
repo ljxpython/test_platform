@@ -86,6 +86,11 @@ export default [
         path: "/goods/table",
         name: "table",
         component: "./Goods/table",
+      },
+      {
+        path: "/goods/protale",
+        name: "protable",
+        component: "./Goods/protale",
       }
       
       
