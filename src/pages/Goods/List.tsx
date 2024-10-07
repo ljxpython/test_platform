@@ -133,7 +133,7 @@ function List() {
       // [vals[0]]: vals[1],
       [values.productType]: values.context
     });
-    setData(data.list);
+    setData(data.data);
     setTotal(data.total);
     console.log('data', data);
     }

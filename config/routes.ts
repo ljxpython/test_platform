@@ -31,72 +31,69 @@ export default [
     component: './Welcome',
   },
   {
-    path: "/goods",
-    name: "goods",
-    icon: "smile",
+    path: '/goods',
+    name: 'goods',
+    icon: 'smile',
+    // hideInMenu: true,  // 隐藏菜单
     // component: "./Goods",
     routes: [
       {
-        path: "/goods",
-        redirect: "/goods/list",
+        path: '/goods',
+        redirect: '/goods/list',
       },
       {
-        path: "/goods/category",
-        name: "category",
-        component: "./Goods/Category",
+        path: '/goods/category',
+        name: 'category',
+        component: './Goods/Category',
       },
       {
-        path: "/goods/list",
-        name: "list",
-        component: "./Goods/List",
+        path: '/goods/list',
+        name: 'list',
+        component: './Goods/List',
       },
       {
-        path: "/goods/addgood",
-        name: "addgood",
-        hideInMenu: true,  // 隐藏菜单
-        component: "./Goods/AddGood",
+        path: '/goods/addgood',
+        name: 'addgood',
+        hideInMenu: true, // 隐藏菜单
+        component: './Goods/AddGood',
       },
       {
-        path: "/goods/spec",
-        name: "spec",
-        component: "./Goods/Spec",
+        path: '/goods/spec',
+        name: 'spec',
+        component: './Goods/Spec',
       },
       {
-        path: "/goods/test",
-        name: "test",
-        component: "./Goods/test",
+        path: '/goods/test',
+        name: 'test',
+        component: './Goods/test',
       },
       {
-        path: "/goods/proform",
-        name: "proform",
-        component: "./Goods/proform",
-        access: "canTest",
+        path: '/goods/proform',
+        name: 'proform',
+        component: './Goods/proform',
+        access: 'canTest',
       },
       {
-        path: "/goods/proform2",
-        name: "proform2",
-        component: "./Goods/proform2",
+        path: '/goods/proform2',
+        name: 'proform2',
+        component: './Goods/proform2',
       },
       {
-        path: "/goods/proform3",
-        name: "proform3",
-        component: "./Goods/proform3",
+        path: '/goods/proform3',
+        name: 'proform3',
+        component: './Goods/proform3',
       },
       {
-        path: "/goods/table",
-        name: "table",
-        component: "./Goods/table",
+        path: '/goods/table',
+        name: 'table',
+        component: './Goods/table',
       },
       {
-        path: "/goods/protale",
-        name: "protable",
-        component: "./Goods/protale",
-      }
-      
-      
-      
-
-    ]
+        path: '/goods/protale',
+        name: 'protable',
+        component: './Goods/protale',
+      },
+    ],
   },
   {
     path: '/admin',
@@ -112,6 +109,27 @@ export default [
         path: '/admin/sub-page',
         name: 'sub-page',
         component: './Admin',
+      },
+    ],
+  },
+  {
+    name: 'project',
+    icon: 'SolutionOutlined',
+    path: '/project',
+    routes: [
+      {
+        path: '/project',
+        redirect: '/project/list',
+      },
+      {
+        path: '/project/list',
+        name: 'list',
+        component: './Project/List',
+      },
+      {
+        path: '/project/create',
+        name: 'create',
+        component: './Project/CreateProcject',
       },
     ],
   },
