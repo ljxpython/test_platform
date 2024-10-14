@@ -34,6 +34,7 @@ export const errorConfig: RequestConfig = {
       if (!success) {
         const error: any = new Error(errorMessage);
         error.name = 'BizError';
+        console.log('error', error);
         error.info = { errorCode, errorMessage, showType, data };
         throw error; // 抛出自制的错误
       }
