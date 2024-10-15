@@ -139,6 +139,29 @@ export default [
     ],
   },
   {
+    name: 'locust',
+    icon: 'smile',
+    path: '/locust',
+    routes: [
+      {
+        path: '/locust',
+        redirect: '/locust/list',
+      },
+      {
+        path: '/locust/list',
+        name: 'list',
+        component: './LocustTest/List',
+      },
+      {
+        path: '/locust/add',
+        name: 'add',
+        component: './LocustTest/locustweb',
+      }
+
+    ]
+
+  },
+  {
     name: 'list.table-list',
     icon: 'table',
     path: '/list',
