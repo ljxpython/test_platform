@@ -54,12 +54,11 @@ export default () => {
           onFinish={async (values) => {
             await waitTime(200);
             console.log(values);
-            const res = await createProject(values)
-            console.log(res)
+            const res = await createProject(values);
+            console.log(res);
             message.success('提交成功:');
             // 跳转回项目列表页面
             history.push('/project/list');
-
           }}
           params={{}}
           request={async () => {
@@ -89,12 +88,22 @@ export default () => {
             label="测试项目名称"
             tooltip="最长为 24 位"
             placeholder="请输入名称"
+            rules={[{ required: true, message: '请输入项目名称!' }]}
+            formItemProps={{
+              rules: [
+                {
+                  required: true,
+                  message: '此项为必填项',
+                },
+              ],
+            }}
           />
           <ProFormText
             width="md"
             name="project_owners"
             label="项目成员"
             placeholder="格式:成员1 成员2 ..."
+            rules={[{ required: true, message: '请输入测试成员的名称!' }]}
           />
           <ProFormText name="project_desc" width="md" label="项目描述" placeholder="项目描述" />
         </ProForm>

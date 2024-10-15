@@ -99,7 +99,11 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
       >
         编辑
       </a>,
-      <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
+      <a onClick={() => {
+        history.push(`/project/detail/${record.id}`);
+      }
+      } target="_blank" rel="noopener noreferrer" key="view">
+        
         查看
       </a>,
       <TableDropdown
@@ -150,7 +154,7 @@ export default () => {
       cardBordered
       request={async (params, sort, filter) => {
         console.log(sort, filter);
-        await waitTime(20);
+        // await waitTime(20);
         const res = await getProjectList(params);
         console.log(res);
         return res;

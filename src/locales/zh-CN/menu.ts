@@ -15,6 +15,7 @@ export default {
   'menu.project': '项目管理',
   'menu.project.list': '测试项目列表',
   'menu.project.create': '创建测试项目',
+  'menu.project.detail': '测试项目详情',
   'menu.project.info': '测试项目文档',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',

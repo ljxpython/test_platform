@@ -131,6 +131,11 @@ export default [
         name: 'create',
         component: './Project/CreateProcject',
       },
+      {
+        path: '/project/detail/:id',
+        name: 'detail',
+        component: './Project/Detail',
+      }
     ],
   },
   {
