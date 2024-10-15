@@ -1,5 +1,6 @@
 declare namespace ProjectApi {
   type ProjectParams = {
+    id?: string;
     project_name?: string;
     project_desc?: string;
     project_owners?: string;

@@ -5,7 +5,7 @@ import { Button, Dropdown, Space, Tag,message } from 'antd';
 import { useRef } from 'react';
 import request from 'umi-request';
 import { history } from '@umijs/max';
-import { getProjectList ,deleteProject} from '@/services/project';
+import { getProjectList, deleteProject, updateProject } from '@/services/project';
 export const waitTimePromise = async (time: number = 10) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -27,11 +27,17 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
     width: 48,
   },
   {
+    title: '项目ID',
+    dataIndex: 'id',
+    hideInTable: true,  // 这个相当于在列表中查找不到,但是可以搜索到这个项目
+  },
+  {
     title: '项目名称',
     dataIndex: 'project_name',
     copyable: true,
     ellipsis: true,
     tooltip: '项目过长会自动收缩',
+    editable: false,
     formItemProps: {
       rules: [
         {
@@ -41,6 +47,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
       ],
     },
   },
+
   {
     title: '项目成员',
     dataIndex: 'project_owners',
@@ -94,16 +101,22 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
       <a
         key="editable"
         onClick={() => {
+          console.log(record);
+          console.log(action);
           action?.startEditable?.(record.id);
         }}
+
       >
         编辑
       </a>,
-      <a onClick={() => {
-        history.push(`/project/detail/${record.id}`);
-      }
-      } target="_blank" rel="noopener noreferrer" key="view">
-        
+      <a
+        onClick={() => {
+          history.push(`/project/detail/${record.id}`);
+        }}
+        target="_blank"
+        rel="noopener noreferrer"
+        key="view"
+      >
         查看
       </a>,
       <TableDropdown
@@ -127,13 +140,13 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
           if (key === 'delete') {
             console.log('delete');
             console.log(record);
-            ;(async () => {
+            (async () => {
               const res = await deleteProject({ ...record });
+              message.success('删除成功');
+              action?.reload();
               console.log(res);
-
             })();
-            () => action?.reload();
-
+            // () => action?.reload();  
           }
         }}
         menus={[
@@ -160,7 +173,12 @@ export default () => {
         return res;
       }}
       editable={{
-        type: 'multiple',
+        type: 'multiple',//这个是允许多行编辑的意思
+        onSave: async (key, row) => {
+          console.log(key, row);
+          await updateProject(row);
+          message.success('更新成功');
+        }
       }}
       columnsState={{
         persistenceKey: 'pro-table-singe-demos',
