@@ -129,7 +129,7 @@ export default [
       {
         path: '/project/create',
         name: 'create',
-        hideInMenu: true, 
+        hideInMenu: true,
         component: './Project/CreateProcject',
       },
       {
@@ -137,11 +137,24 @@ export default [
         name: 'detail',
         hideInMenu: true, // 隐藏菜单
         component: './Project/Detail',
-      }
+      },
     ],
   },
   {
-    
+    name: 'openapitest',
+    icon: 'smile',
+    path: '/openapitest',
+    routes: [
+      {
+        path: '/openapitest',
+        redirect: '/openapitest/list',
+      },
+      {
+        path: '/openapitest/casemoudel',
+        name: 'casemoudel',
+        component: './openapitest/caseMoudleList',
+      },
+    ],
   },
   {
     name: 'locust',
@@ -161,10 +174,8 @@ export default [
         path: '/locust/add',
         name: 'add',
         component: './LocustTest/locustweb',
-      }
-
-    ]
-
+      },
+    ],
   },
   {
     name: 'list.table-list',
