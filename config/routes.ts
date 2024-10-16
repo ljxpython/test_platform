@@ -129,14 +129,19 @@ export default [
       {
         path: '/project/create',
         name: 'create',
+        hideInMenu: true, 
         component: './Project/CreateProcject',
       },
       {
         path: '/project/detail/:id',
         name: 'detail',
+        hideInMenu: true, // 隐藏菜单
         component: './Project/Detail',
       }
     ],
+  },
+  {
+    
   },
   {
     name: 'locust',

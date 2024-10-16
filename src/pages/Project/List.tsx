@@ -1,11 +1,10 @@
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import { deleteProject, getProjectList, updateProject } from '@/services/test_project';
+import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
-import { Button, Dropdown, Space, Tag,message } from 'antd';
-import { useRef } from 'react';
-import request from 'umi-request';
 import { history } from '@umijs/max';
-import { getProjectList, deleteProject, updateProject } from '@/services/project';
+import { Button, message } from 'antd';
+import { useRef } from 'react';
 export const waitTimePromise = async (time: number = 10) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -18,8 +17,6 @@ export const waitTime = async (time: number = 10) => {
   await waitTimePromise(time);
 };
 
-
-
 const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
   {
     dataIndex: 'index',
@@ -29,7 +26,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
   {
     title: '项目ID',
     dataIndex: 'id',
-    hideInTable: true,  // 这个相当于在列表中查找不到,但是可以搜索到这个项目
+    hideInTable: true, // 这个相当于在列表中查找不到,但是可以搜索到这个项目
   },
   {
     title: '项目名称',
@@ -105,7 +102,6 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
           console.log(action);
           action?.startEditable?.(record.id);
         }}
-
       >
         编辑
       </a>,
@@ -146,7 +142,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
               action?.reload();
               console.log(res);
             })();
-            // () => action?.reload();  
+            // () => action?.reload();
           }
         }}
         menus={[
@@ -173,12 +169,12 @@ export default () => {
         return res;
       }}
       editable={{
-        type: 'multiple',//这个是允许多行编辑的意思
+        type: 'multiple', //这个是允许多行编辑的意思
         onSave: async (key, row) => {
           console.log(key, row);
           await updateProject(row);
           message.success('更新成功');
-        }
+        },
       }}
       columnsState={{
         persistenceKey: 'pro-table-singe-demos',
@@ -199,18 +195,18 @@ export default () => {
           listsHeight: 400,
         },
       }}
-    //   form={{
-    //     // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
-    //     syncToUrl: (values, type) => {
-    //       if (type === 'get') {
-    //         return {
-    //           ...values,
-    //           created_at: [values.startTime, values.endTime],
-    //         };
-    //       }
-    //       return values;
-    //     },
-    //   }}
+      //   form={{
+      //     // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
+      //     syncToUrl: (values, type) => {
+      //       if (type === 'get') {
+      //         return {
+      //           ...values,
+      //           created_at: [values.startTime, values.endTime],
+      //         };
+      //       }
+      //       return values;
+      //     },
+      //   }}
       pagination={{
         defaultCurrent: 1,
         showSizeChanger: true,
@@ -229,7 +225,7 @@ export default () => {
           icon={<PlusOutlined />}
           onClick={() => {
             // actionRef.current?.reload();
-            history.push('/project/create')
+            history.push('/project/create');
           }}
           type="primary"
         >

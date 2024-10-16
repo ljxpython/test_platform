@@ -1,7 +1,7 @@
+import { getProjectList } from '@/services/test_project';
 import { ProTable } from '@ant-design/pro-components';
-import { useEffect, useState } from 'react';
 import { useParams } from '@umijs/max';
-import { getProjectList, deleteProject, updateProject } from '@/services/project';
+import { useEffect, useState } from 'react';
 
 // 模拟获取数据的函数
 // const fetchData = async () => {

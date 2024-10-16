@@ -1,14 +1,8 @@
-import {
-  ProForm,
-  ProFormRadio,
-  ProFormText,
-  PageContainer,
-  ProCard,
-} from '@ant-design/pro-components';
+import { createProject } from '@/services/test_project';
+import { PageContainer, ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
+import { history } from '@umijs/max';
 import { Col, Row, Space, message } from 'antd';
 import { useState } from 'react';
-import { createProject } from '@/services/project';
-import { history } from '@umijs/max';
 
 type LayoutType = Parameters<typeof ProForm>[0]['layout'];
 const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
