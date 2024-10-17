@@ -34,7 +34,7 @@ export default [
     path: '/goods',
     name: 'goods',
     icon: 'smile',
-    // hideInMenu: true,  // 隐藏菜单
+    hideInMenu: true,  // 隐藏菜单
     // component: "./Goods",
     routes: [
       {

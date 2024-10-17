@@ -30,7 +30,7 @@ export default {
   'menu.openapitest.caselist': '接口测试case列表',
   'menu.openapitest.casedetaile': '接口测试case详情',
   'menu.openapitest.casemoudel': '接口测试模块',
-  'menu.openapitest.casemoudeldetail': '接口测试模块详情',
+  'menu.openapitest.casemoudledtaile': '接口测试模块详情',
   'menu.openapitest.case': '接口测试用例',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',

@@ -17,6 +17,8 @@ export const waitTime = async (time: number = 10) => {
   await waitTimePromise(time);
 };
 
+// 也可以看看这个例子,这个是当时学习这部分的时候,第一次敲的代码,包含着ProComponents使用的基础功能
+// src / pages / Goods / protale.tsx
 const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
   {
     dataIndex: 'index',
