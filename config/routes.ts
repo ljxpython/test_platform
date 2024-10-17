@@ -154,6 +154,23 @@ export default [
         name: 'casemoudel',
         component: './openapitest/caseMoudleList',
       },
+      {
+        path: '/openapitest/casemoudledetaile/:id',
+        name: 'casemoudledtaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/caseMoudleDetail',
+      },
+      {
+        path: '/openapitest/caselist',
+        name: 'caselist',
+        component: './openapitest/caseList',
+      },
+      {
+        path: '/openapitest/casedetaile/:id',
+        name: 'casemoudledtaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/caseDetail',
+      },
     ],
   },
   {

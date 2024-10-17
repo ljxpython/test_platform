@@ -89,7 +89,7 @@ const columns: ProColumns<TestMoudle.QueryMoudle>[] = [
       </a>,
       <a
         onClick={() => {
-          history.push(`/project/detail/${record.id}`);
+          history.push(`/openapitest/casemoudledetaile/${record.id}`);
         }}
         target="_blank"
         rel="noopener noreferrer"
