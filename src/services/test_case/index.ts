@@ -4,6 +4,9 @@ import { request } from '@umijs/max';
 export async function syncTestCase(data: any,options?: { [key: string]: any },) {
   return request<TestCase.SyncTestCaseResponse>('/api/auto_pytest/sync_test_case', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data,
     ...(options || {}),
   });
@@ -13,6 +16,9 @@ export async function syncTestCase(data: any,options?: { [key: string]: any },) 
 export async function getCase(data: TestCase.GetCaseParams,options?: { [key: string]: any },) {
   return request<TestCase.GetCaseResponse>('/api/auto_pytest/get_case', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     data,
     ...(options || {}),
   });

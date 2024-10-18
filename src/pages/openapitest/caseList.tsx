@@ -23,12 +23,50 @@ export const waitTime = async (time: number = 10) => {
   await waitTimePromise(time);
 };
 
-  
-
-
-
 export default () => {
   const actionRef = useRef<ActionType>();
+  // const [options, setOptions] = useState([]); // 初始化为空数组
+  // // 模拟从网络请求中获取选项数据
+  // const fetchOptions = async () => {
+  //   try {
+  //     let data = await getCase({});
+
+  //     setOptions(data); // 假设返回的数据格式为 [{ label: '特性 A', value: 'featureA' }, ...]
+  //     console.log(data.data);
+  //   } catch (error) {
+  //     console.error('获取选项失败:', error);
+  //   }
+  // };
+  // // 在组件挂载时调用
+  // useEffect(() => {
+  //   fetchOptions();
+  // }, []);
+  const users = [
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bob' },
+  ];
+  const options = [
+    {
+      label: 'item 1',
+      value: 'a',
+    },
+    {
+      label: 'item 2',
+      value: 'b',
+    },
+    {
+      label: 'item 3',
+      value: 'c',
+    },
+  ];
+
+  const userMap = users.reduce((accumulator, user) => {
+    accumulator[user.id] = user.name; // 使用用户 ID 作为键
+    return accumulator;
+  }, {});
+
+  console.log(userMap); // 输出: { 1: 'Alice', 2: 'Bob' }
+
   const columns: ProColumns<TestCase.GetCaseSingle>[] = [
     {
       dataIndex: 'index',
@@ -43,10 +81,16 @@ export default () => {
     {
       title: '测试场景',
       dataIndex: 'case_sence',
+      valueType: 'select',
       // key: 'treeSelect',
+      fieldProps: options ,
       width: 100,
       // valueType: 'treeSelect',
       copyable: true,
+      // valueEnum: options.reduce((acc, curr) => {
+      //   acc[curr.value] = { text: curr.label };
+      //   return acc;
+      // }, {}),
       // request: async () => {
       //   const data = await getCase();
       //   return data.data; // 确保返回数据
@@ -62,6 +106,21 @@ export default () => {
       //   multiple: true,
       //   treeNodeFilterProp: 'field',
       // },
+    },
+    {
+      title: '标签',
+      dataIndex: 'tags',
+      valueType: 'select',
+      // 这里定义可选项
+      valueEnum: {
+        featureA: { text: '特性 A' },
+        featureB: { text: '特性 B' },
+        featureC: { text: '特性 C' },
+      },
+      // 使用 fieldProps 来实现多选
+      fieldProps: {
+        // mode: 'multiple', // 设置为多选模式,默认是单选
+      },
     },
     {
       title: '模块名称',
@@ -171,7 +230,7 @@ export default () => {
       ],
     },
   ];
-  
+
   return (
     <ProTable<TestCase.GetCaseSingle, TestCase.GetCaseResponse>
       columns={columns}

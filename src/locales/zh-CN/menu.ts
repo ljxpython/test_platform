@@ -32,6 +32,7 @@ export default {
   'menu.openapitest.casemoudel': '接口测试模块',
   'menu.openapitest.casemoudledtaile': '接口测试模块详情',
   'menu.openapitest.case': '接口测试用例',
+  'menu.openapitest.test': '测试验证',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',
