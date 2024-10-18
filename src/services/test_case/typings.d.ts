@@ -48,5 +48,16 @@ export interface GetCaseResponse {
 	pageSize: number;
 	total: number;
 }
+
+	
+	export interface CaseSenceList {
+    case_sence_list: string[];
+  }
+
+  export interface GetCaseSenceResponse {
+    data: CaseSenceList;
+    msg: string;
+    success: boolean;
+  }
     
 }

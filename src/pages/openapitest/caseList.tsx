@@ -1,5 +1,5 @@
 import { queryTestMoudle, syncTestMoudle, updateTestMoudle } from '@/services/test_moudle';
-import { getCase,syncTestCase } from '@/services/test_case';
+import { getCase, syncTestCase, getCaseSence } from '@/services/test_case';
 import { deleteProject } from '@/services/test_project';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -25,47 +25,29 @@ export const waitTime = async (time: number = 10) => {
 
 export default () => {
   const actionRef = useRef<ActionType>();
-  // const [options, setOptions] = useState([]); // 初始化为空数组
-  // // 模拟从网络请求中获取选项数据
-  // const fetchOptions = async () => {
-  //   try {
-  //     let data = await getCase({});
+  const [casesence, setCasesence] = useState<string[]>([]); // 初始化为空数组
+  const getcasesence = async () => {
+    try {
+      let data = await getCaseSence({});
+      console.log(data);
+      console.log('case_sence_list', data.data.case_sence_list);
+      setCasesence(data.data.case_sence_list);
+      // console.log('获取casesence的值', casesence);
+    } catch (error) {
+      console.error('获取选项失败:', error);
+    }
+  };
 
-  //     setOptions(data); // 假设返回的数据格式为 [{ label: '特性 A', value: 'featureA' }, ...]
-  //     console.log(data.data);
-  //   } catch (error) {
-  //     console.error('获取选项失败:', error);
-  //   }
-  // };
-  // // 在组件挂载时调用
-  // useEffect(() => {
-  //   fetchOptions();
-  // }, []);
-  const users = [
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' },
-  ];
-  const options = [
-    {
-      label: 'item 1',
-      value: 'a',
-    },
-    {
-      label: 'item 2',
-      value: 'b',
-    },
-    {
-      label: 'item 3',
-      value: 'c',
-    },
-  ];
+  // 下面两个useEffect是用于获取casesence的值,我到现在也不知道为什么要写两个
+  // 使用 useEffect 监听 casesence 的变化
+  useEffect(() => {
+    console.log('获取casesence的值', casesence);
+  }, [casesence]); // 依赖于 casesence，任何变化都会打印
 
-  const userMap = users.reduce((accumulator, user) => {
-    accumulator[user.id] = user.name; // 使用用户 ID 作为键
-    return accumulator;
-  }, {});
-
-  console.log(userMap); // 输出: { 1: 'Alice', 2: 'Bob' }
+  // 在组件加载时调用 getcasesence
+  useEffect(() => {
+    getcasesence();
+  }, []);
 
   const columns: ProColumns<TestCase.GetCaseSingle>[] = [
     {
@@ -82,30 +64,14 @@ export default () => {
       title: '测试场景',
       dataIndex: 'case_sence',
       valueType: 'select',
-      // key: 'treeSelect',
-      fieldProps: options ,
+      fieldProps: {
+        options: casesence,
+        mode: 'multiple',
+      },
+      // valueEnum: valueEnum,
       width: 100,
       // valueType: 'treeSelect',
       copyable: true,
-      // valueEnum: options.reduce((acc, curr) => {
-      //   acc[curr.value] = { text: curr.label };
-      //   return acc;
-      // }, {}),
-      // request: async () => {
-      //   const data = await getCase();
-      //   return data.data; // 确保返回数据
-      // },
-      // fieldProps: {
-      //   options: cascaderOptions,
-      //   fieldNames: {
-      //     children: 'language', // 确保这个属性在数据中存在
-      //     label: 'field',      // 确保这个属性在数据中存在
-      //   },
-      //   showSearch: true,
-      //   filterTreeNode: true,
-      //   multiple: true,
-      //   treeNodeFilterProp: 'field',
-      // },
     },
     {
       title: '标签',
@@ -260,7 +226,7 @@ export default () => {
           option: { fixed: 'right', disable: true },
         },
         onChange(value) {
-          console.log('value: ', value);
+          // console.log('value: ', value);
         },
       }}
       rowKey="id"
@@ -276,7 +242,7 @@ export default () => {
         defaultCurrent: 1,
         showSizeChanger: true,
         onShowSizeChange: (current, pageSize) => {
-          console.log(current, pageSize);
+          // console.log(current, pageSize);
         },
         showQuickJumper: true,
         // pageSize: 5,

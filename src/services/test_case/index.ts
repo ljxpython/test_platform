@@ -24,4 +24,16 @@ export async function getCase(data: TestCase.GetCaseParams,options?: { [key: str
   });
 }
 
+/** 查询测试case场景 POST /api/auto_pytest/get_case_sence */
+export async function getCaseSence(data: any,options?: { [key: string]: any },) {
+  return request<TestCase.GetCaseSenceResponse>('/api/auto_pytest/get_case_sence', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data,
+    ...(options || {}),
+  });
+}
+
 
