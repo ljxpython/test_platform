@@ -6,10 +6,17 @@ import {
   deleteSuite,
   getSuiteList,
 } from '@/services/test_suite';
-import { PageContainer, ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
+import {
+  PageContainer,
+  ProCard,
+  ProForm,
+  ProFormText,
+  ProFormInstance,
+  ProFormSelect,} from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import { Col, Row, Space, message } from 'antd';
 import { useState } from 'react';
+import { useRef } from 'react';
 
 type LayoutType = Parameters<typeof ProForm>[0]['layout'];
 const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
@@ -24,7 +31,7 @@ const waitTime = (time: number = 100) => {
 
 export default () => {
   const [formLayoutType, setFormLayoutType] = useState<LayoutType>(LAYOUT_TYPE_HORIZONTAL);
-
+const formRef = useRef<ProFormInstance>();
   const formItemLayout =
     formLayoutType === LAYOUT_TYPE_HORIZONTAL
       ? {
@@ -34,7 +41,7 @@ export default () => {
       : null;
 
   return (
-    <PageContainer>
+    <PageContainer header={{ title: false }}>
       <ProCard>
         <ProForm<ProjectApi.ProjectParams>
           {...formItemLayout}
@@ -55,12 +62,17 @@ export default () => {
           onFinish={async (values) => {
             await waitTime(200);
             console.log(values);
-            const res = await createProject(values);
-            console.log(res);
+            const val1 = await formRef.current?.validateFields();
+            console.log('validateFields:', val1);
+            const val2 = await formRef.current?.validateFieldsReturnFormatValue?.();
+            console.log('validateFieldsReturnFormatValue:', val2);
+            // const res = await createProject(values);
+            // console.log(res);
             message.success('提交成功:');
             // 跳转回项目列表页面
-            history.push('/project/list');
+            // history.push('/project/list');
           }}
+          formRef={formRef}
           params={{}}
           request={async () => {
             await waitTime(100);
@@ -70,19 +82,6 @@ export default () => {
             };
           }}
         >
-          {/* <ProFormRadio.Group
-            style={{
-              margin: 16,
-            }}
-            label="标签布局"
-            radioType="button"
-            fieldProps={{
-              value: 'horizontal',
-              // value: formLayoutType,
-              // onChange: (e) => setFormLayoutType(e.target.value),
-            }}
-            options={['horizontal', 'vertical', 'inline']}
-          /> */}
           <ProFormText
             width="md"
             name="project_name"

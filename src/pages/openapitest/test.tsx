@@ -1,160 +1,269 @@
-import { DownOutlined } from '@ant-design/icons';
-import type { ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
-import { Button, Tag } from 'antd';
+import type { ProFormInstance } from '@ant-design/pro-components';
+import {
+  ProForm,
+  ProFormCascader,
+  ProFormDatePicker,
+  ProFormDateRangePicker,
+  ProFormDigit,
+  ProFormList,
+  ProFormMoney,
+  ProFormSelect,
+  ProFormText,
+  ProFormTextArea,
+  ProFormTreeSelect,
+  ProFormFieldSet,
+} from '@ant-design/pro-components';
+import { TreeSelect, message } from 'antd';
+import moment from 'dayjs';
+import { useRef } from 'react';
 
-export type Status = {
-  color: string;
-  text: string;
-};
-
-const statusMap = {
-  0: {
-    color: 'blue',
-    text: '进行中',
-  },
-  1: {
-    color: 'green',
-    text: '已完成',
-  },
-  2: {
-    color: 'volcano',
-    text: '警告',
-  },
-  3: {
-    color: 'red',
-    text: '失败',
-  },
-  4: {
-    color: '',
-    text: '未完成',
-  },
-};
-
-export type TableListItem = {
-  key: number;
-  name: string;
-  containers: number;
-  creator: string;
-  status: Status;
-  createdAt: number;
-};
-const tableListDataSource: TableListItem[] = [];
-
-const creators = ['付小小', '曲丽丽', '林东东', '陈帅帅', '兼某某'];
-
-for (let i = 0; i < 5; i += 1) {
-  tableListDataSource.push({
-    key: i,
-    name: 'AppName',
-    containers: Math.floor(Math.random() * 20),
-    creator: creators[Math.floor(Math.random() * creators.length)],
-    status: statusMap[((Math.floor(Math.random() * 10) % 5) + '') as '0'],
-    createdAt: Date.now() - Math.floor(Math.random() * 100000),
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
   });
-}
+};
 
-const columns: ProColumns<TableListItem>[] = [
+const treeData = [
   {
-    title: '应用名称',
-    width: 120,
-    dataIndex: 'name',
-    render: (_) => <a>{_}</a>,
+    title: 'Node1',
+    value: '0-0',
+    key: '0-0',
+    children: [
+      {
+        title: 'Child Node1',
+        value: '0-0-0',
+        key: '0-0-0',
+      },
+    ],
   },
   {
-    title: '状态',
-    width: 120,
-    dataIndex: 'status',
-    render: (_, record) => <Tag color={record.status.color}>{record.status.text}</Tag>,
-  },
-  {
-    title: '容器数量',
-    width: 120,
-    dataIndex: 'containers',
-    align: 'right',
-    sorter: (a, b) => a.containers - b.containers,
-  },
-
-  {
-    title: '创建者',
-    width: 120,
-    dataIndex: 'creator',
-    valueEnum: {
-      all: { text: '全部' },
-      付小小: { text: '付小小' },
-      曲丽丽: { text: '曲丽丽' },
-      林东东: { text: '林东东' },
-      陈帅帅: { text: '陈帅帅' },
-      兼某某: { text: '兼某某' },
-    },
+    title: 'Node2',
+    value: '0-1',
+    key: '0-1',
+    children: [
+      {
+        title: 'Child Node3',
+        value: '0-1-0',
+        key: '0-1-0',
+      },
+      {
+        title: 'Child Node4',
+        value: '0-1-1',
+        key: '0-1-1',
+      },
+      {
+        title: 'Child Node5',
+        value: '0-1-2',
+        key: '0-1-2',
+      },
+    ],
   },
 ];
 
-const expandedRowRender = () => {
-  const data = [];
-  for (let i = 0; i < 3; i += 1) {
-    data.push({
-      key: i,
-      date: '2014-12-24 23:12:00',
-      name: 'This is production name',
-      upgradeNum: 'Upgraded: 56',
-    });
-  }
-  return (
-    <ProTable
-      columns={[
-        { title: 'Date', dataIndex: 'date', key: 'date' },
-        { title: 'Name', dataIndex: 'name', key: 'name' },
-
-        { title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' },
-        {
-          title: 'Action',
-          dataIndex: 'operation',
-          key: 'operation',
-          valueType: 'option',
-          render: () => [<a key="Pause">Pause</a>, <a key="Stop">Stop</a>],
-        },
-      ]}
-      headerTitle={false}
-      search={false}
-      options={false}
-      dataSource={data}
-      pagination={false}
-    />
-  );
-};
-
 export default () => {
+  const formRef = useRef<
+    ProFormInstance<{
+      name: string;
+      company?: string;
+      useMode?: string;
+    }>
+  >();
   return (
-    <ProTable<TableListItem>
-      columns={columns}
-      request={(params, sorter, filter) => {
-        // 表单搜索项会从 params 传入，传递给后端接口。
-        console.log(params, sorter, filter);
-        return Promise.resolve({
-          data: tableListDataSource,
-          success: true,
-        });
+    <ProForm<{
+      name: string;
+      company?: string;
+      useMode?: string;
+    }>
+      onFinish={async (values) => {
+        await waitTime(2000);
+        console.log(values);
+        const val1 = await formRef.current?.validateFields();
+        console.log('validateFields:', val1);
+        const val2 = await formRef.current?.validateFieldsReturnFormatValue?.();
+        console.log('validateFieldsReturnFormatValue:', val2);
+        message.success('提交成功');
       }}
-      rowKey="key"
-      pagination={{
-        showQuickJumper: true,
+      formRef={formRef}
+      params={{ id: '100' }}
+      formKey="base-form-use-demo"
+      dateFormatter={(value, valueType) => {
+        console.log('---->', value, valueType);
+        return value.format('YYYY/MM/DD HH:mm:ss');
       }}
-      expandable={{ expandedRowRender }}
-      search={false}
-      dateFormatter="string"
-      headerTitle="嵌套表格"
-      options={false}
-      toolBarRender={() => [
-        <Button key="show">查看日志</Button>,
-        <Button key="out">
-          导出数据
-          <DownOutlined />
-        </Button>,
-        <Button key="primary" type="primary">
-          创建应用
-        </Button>,
-      ]}
-    />
+      request={async () => {
+        await waitTime(1500);
+        return {
+          name: '蚂蚁设计有限公司',
+          useMode: 'chapter',
+        };
+      }}
+      autoFocusFirstInput
+    >
+      {/* <ProForm.Group>
+        <ProFormText
+          width="md"
+          name="name"
+          required
+          dependencies={[['contract', 'name']]}
+          addonBefore={<a>客户名称应该怎么获得？</a>}
+          addonAfter={<a>点击查看更多</a>}
+          label="签约客户名称"
+          tooltip="最长为 24 位"
+          placeholder="请输入名称"
+          rules={[{ required: true, message: '这是必填项' }]}
+        />
+        <ProFormText width="md" name="company" label="我方公司名称" placeholder="请输入名称" />
+      </ProForm.Group>
+      <ProForm.Group>
+        <ProFormDigit name="count" label="人数" width="lg" />
+      </ProForm.Group>
+      <ProForm.Group>
+        <ProFormText
+          name={['contract', 'name']}
+          width="md"
+          label="合同名称"
+          placeholder="请输入名称"
+        />
+        <ProFormDateRangePicker width="md" name={['contract', 'createTime']} label="合同生效时间" />
+      </ProForm.Group>
+      <ProForm.Group>
+        <ProFormSelect
+          options={[
+            {
+              value: 'chapter',
+              label: '盖章后生效',
+            },
+          ]}
+          readonly
+          width="xs"
+          cacheForSwr
+          name="useMode"
+          label="合同约定生效方式"
+        />
+        <ProFormSelect.SearchSelect
+          width="xs"
+          options={[
+            {
+              value: 'time',
+              label: '履行完终止',
+              type: 'time',
+              options: [
+                {
+                  value: 'time1',
+                  label: '履行完终止1',
+                },
+                {
+                  value: 'time2',
+                  label: '履行完终止2',
+                },
+              ],
+            },
+          ]}
+          name="unusedMode"
+          label="合同约定失效方式"
+        />
+        <ProFormMoney
+          width="md"
+          name="money"
+          label="合同约定金额"
+          fieldProps={{
+            numberPopoverRender: true,
+          }}
+        />
+      </ProForm.Group>
+      <ProFormText width="sm" name="id" label="主合同编号" />
+      <ProFormText name="project" width="md" disabled label="项目名称" initialValue="xxxx项目" />
+      <ProFormTextArea colProps={{ span: 24 }} name="address" label="详细的工作地址或家庭住址" />
+      <ProFormText width="xs" name="mangerName" disabled label="商务经理" initialValue="启途" />
+      <ProFormCascader
+        width="md"
+        request={async () => [
+          {
+            value: 'zhejiang',
+            label: '浙江',
+            children: [
+              {
+                value: 'hangzhou',
+                label: '杭州',
+                children: [
+                  {
+                    value: 'xihu',
+                    label: '西湖',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            value: 'jiangsu',
+            label: 'Jiangsu',
+            children: [
+              {
+                value: 'nanjing',
+                label: 'Nanjing',
+                children: [
+                  {
+                    value: 'zhonghuamen',
+                    label: 'Zhong Hua Men',
+                  },
+                ],
+              },
+            ],
+          },
+        ]}
+        name="areaList"
+        label="区域"
+        initialValue={['zhejiang', 'hangzhou', 'xihu']}
+        addonAfter={'qixian'}
+      />
+      <ProFormTreeSelect
+        initialValue={['0-0-0']}
+        label="树形下拉选择器"
+        width={600}
+        fieldProps={{
+          fieldNames: {
+            label: 'title',
+          },
+          treeData,
+          treeCheckable: true,
+          showCheckedStrategy: TreeSelect.SHOW_PARENT,
+          placeholder: 'Please select',
+        }}
+      />
+      <ProFormDatePicker
+        name="date"
+        transform={(value) => {
+          return {
+            date: moment(value).unix(),
+          };
+        }}
+      /> */}
+      {/* <ProFormText
+        name={['contract', 'name']}
+        width="md"
+        label="合同名称"
+        placeholder="请输入名称"
+      />
+      <ProFormText
+        name={['contract', 'age']}
+        width="md"
+        label="合同年份"
+        placeholder="请输入名称"
+      /> */}
+      <ProFormFieldSet
+        name="list"
+        label="组件列表"
+        // 支持 两种方式，type="group" 会用input.group 包裹
+        // 如果不配置 默认使用 space
+        type="group"
+        transform={(value: any) => ({ startTime: value[0], endTime: value[1] })}
+      >
+        <ProFormText width="md" />
+        <ProFormText width="md" />
+        <ProFormText width="md" />
+      </ProFormFieldSet>
+    </ProForm>
   );
 };
