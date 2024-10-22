@@ -171,6 +171,16 @@ export default [
         hideInMenu: true, // 隐藏菜单
         component: './openapitest/caseDetail',
       },
+            {
+        path: '/openapitest/casesuitelist',
+        name: 'casesuitelist',
+        component: './openapitest/caseSuiteList',
+      },
+                  {
+        path: '/openapitest/createcasesuite',
+        name: 'createcasesuite',
+        component: './openapitest/createCaseSuite',
+      },
       {
         path: '/openapitest/test',
         name: 'test',

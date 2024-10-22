@@ -28,6 +28,8 @@ export default {
   'menu.locust.report.add': '添加压测报告',
   'menu.openapitest': '接口测试',
   'menu.openapitest.caselist': '接口测试case列表',
+  'menu.openapitest.casesuitelist': '接口测试套件列表',
+  'menu.openapitest.createcasesuite': '创建接口测试套件',
   'menu.openapitest.casedetaile': '接口测试case详情',
   'menu.openapitest.casemoudel': '接口测试模块',
   'menu.openapitest.casemoudledtaile': '接口测试模块详情',

@@ -1,146 +1,160 @@
-import {
-  ProForm,
-  ProFormSelect,
-  ProCard,
-  PageContainer,
-  ProFormCheckbox,
-} from '@ant-design/pro-components';
-import { Switch } from 'antd';
-import { useState } from 'react';
-import { Button } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import type { ProColumns } from '@ant-design/pro-components';
+import { ProTable } from '@ant-design/pro-components';
+import { Button, Tag } from 'antd';
+
+export type Status = {
+  color: string;
+  text: string;
+};
+
+const statusMap = {
+  0: {
+    color: 'blue',
+    text: '进行中',
+  },
+  1: {
+    color: 'green',
+    text: '已完成',
+  },
+  2: {
+    color: 'volcano',
+    text: '警告',
+  },
+  3: {
+    color: 'red',
+    text: '失败',
+  },
+  4: {
+    color: '',
+    text: '未完成',
+  },
+};
+
+export type TableListItem = {
+  key: number;
+  name: string;
+  containers: number;
+  creator: string;
+  status: Status;
+  createdAt: number;
+};
+const tableListDataSource: TableListItem[] = [];
+
+const creators = ['付小小', '曲丽丽', '林东东', '陈帅帅', '兼某某'];
+
+for (let i = 0; i < 5; i += 1) {
+  tableListDataSource.push({
+    key: i,
+    name: 'AppName',
+    containers: Math.floor(Math.random() * 20),
+    creator: creators[Math.floor(Math.random() * creators.length)],
+    status: statusMap[((Math.floor(Math.random() * 10) % 5) + '') as '0'],
+    createdAt: Date.now() - Math.floor(Math.random() * 100000),
+  });
+}
+
+const columns: ProColumns<TableListItem>[] = [
+  {
+    title: '应用名称',
+    width: 120,
+    dataIndex: 'name',
+    render: (_) => <a>{_}</a>,
+  },
+  {
+    title: '状态',
+    width: 120,
+    dataIndex: 'status',
+    render: (_, record) => <Tag color={record.status.color}>{record.status.text}</Tag>,
+  },
+  {
+    title: '容器数量',
+    width: 120,
+    dataIndex: 'containers',
+    align: 'right',
+    sorter: (a, b) => a.containers - b.containers,
+  },
+
+  {
+    title: '创建者',
+    width: 120,
+    dataIndex: 'creator',
+    valueEnum: {
+      all: { text: '全部' },
+      付小小: { text: '付小小' },
+      曲丽丽: { text: '曲丽丽' },
+      林东东: { text: '林东东' },
+      陈帅帅: { text: '陈帅帅' },
+      兼某某: { text: '兼某某' },
+    },
+  },
+];
+
+const expandedRowRender = () => {
+  const data = [];
+  for (let i = 0; i < 3; i += 1) {
+    data.push({
+      key: i,
+      date: '2014-12-24 23:12:00',
+      name: 'This is production name',
+      upgradeNum: 'Upgraded: 56',
+    });
+  }
+  return (
+    <ProTable
+      columns={[
+        { title: 'Date', dataIndex: 'date', key: 'date' },
+        { title: 'Name', dataIndex: 'name', key: 'name' },
+
+        { title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' },
+        {
+          title: 'Action',
+          dataIndex: 'operation',
+          key: 'operation',
+          valueType: 'option',
+          render: () => [<a key="Pause">Pause</a>, <a key="Stop">Stop</a>],
+        },
+      ]}
+      headerTitle={false}
+      search={false}
+      options={false}
+      dataSource={data}
+      pagination={false}
+    />
+  );
+};
 
 export default () => {
-  const [readonly, setReadonly] = useState(false);
-  const onFinish = (values) => {
-    console.log('表单提交:', values);
-  };
-    return (
-      <PageContainer>
-        <ProCard>
-          <ProForm
-            // readonly={readonly}
-            onClick={async (value) => {
-              console.log(value);
-            }}
-            submitter={{
-              searchConfig: {
-                submitText: '查询1',
-                resetText: '重置1',
-              },
-            }}
-            // initialValues={{
-            //   userQuery: [{ label: '全部', value: 'all' }],
-            // }}
-            // onFinish={async (value) => {
-            //   console.log(value);
-            // }}
-          >
-            <ProForm.Group>
-              {/* <ProFormSelect.SearchSelect
-            name="userQuery"
-            label="查询选择器 - request"
-            fieldProps={{
-              labelInValue: true,
-              style: {
-                minWidth: 140,
-              },
-            }}
-            debounceTime={300}
-            request={async ({ keyWords = '' }) => {
-              return [
-                { label: '全部', value: 'all' },
-                { label: '未解决', value: 'open' },
-                { label: '未解决(已分配)', value: 'assignees' },
-                { label: '已解决', value: 'closed' },
-                { label: '解决中', value: 'processing' },
-              ].filter(({ value, label }) => {
-                return value.includes(keyWords) || label.includes(keyWords);
-              });
-            }}
-          />
-          <ProFormSelect.SearchSelect
-            name="userQuery2"
-            label="查询选择器 - valueEnum"
-            fieldProps={{
-              style: {
-                minWidth: 140,
-              },
-            }}
-            valueEnum={{
-              all: { text: '全部', status: 'Default' },
-              open: {
-                text: '未解决',
-                status: 'Error',
-              },
-              closed: {
-                text: '已解决',
-                status: 'Success',
-              },
-              processing: {
-                text: '解决中',
-                status: 'Processing',
-              },
-            }}
-          /> */}
-              <ProFormSelect.SearchSelect
-                name="用户使用"
-                label="查询选择器-多选 - options"
-                fieldProps={{
-                  labelInValue: false,
-                  placeholder: '请输入用户名',
-                  maxLength: 20,
-                  style: {
-                    minWidth: 140,
-                  },
-                }}
-                options={[
-                  { label: '全部', value: 'all' },
-                  { label: '未解决', value: 'open' },
-                  { label: '已解决', value: 'closed' },
-                  { label: '解决中', value: 'processing' },
-                ]}
-              />
-            </ProForm.Group>
-          </ProForm>
-        </ProCard>
-        <ProCard title="查询选择器-多选 - request">
-          <ProForm onFinish={onFinish}>
-            <ProFormCheckbox.Group
-              name="features"
-              label="选择特性"
-              options={[
-                { label: '特性 A', value: 'featureA' },
-                { label: '特性 B', value: 'featureB' },
-                { label: '特性 C', value: 'featureC' },
-              ]}
-              fieldProps={{
-                onChange: (checkedValues) => {
-                  console.log('选中的特性:', checkedValues);
-                },
-              }}
-            />
-            {/* <Button type="primary" htmlType="submit">
-              提交
-            </Button> */}
-          </ProForm>
-        </ProCard>
-      </PageContainer>
-
-      // <div
-      //   style={{
-      //     padding: 24,
-      //   }}
-      // >
-      //   <Switch
-      //     style={{
-      //       marginBlockEnd: 16,
-      //     }}
-      //     checked={readonly}
-      //     checkedChildren="编辑"
-      //     unCheckedChildren="只读"
-      //     onChange={setReadonly}
-      //   />
-
-      // </div>
-    );
+  return (
+    <ProTable<TableListItem>
+      columns={columns}
+      request={(params, sorter, filter) => {
+        // 表单搜索项会从 params 传入，传递给后端接口。
+        console.log(params, sorter, filter);
+        return Promise.resolve({
+          data: tableListDataSource,
+          success: true,
+        });
+      }}
+      rowKey="key"
+      pagination={{
+        showQuickJumper: true,
+      }}
+      expandable={{ expandedRowRender }}
+      search={false}
+      dateFormatter="string"
+      headerTitle="嵌套表格"
+      options={false}
+      toolBarRender={() => [
+        <Button key="show">查看日志</Button>,
+        <Button key="out">
+          导出数据
+          <DownOutlined />
+        </Button>,
+        <Button key="primary" type="primary">
+          创建应用
+        </Button>,
+      ]}
+    />
+  );
 };

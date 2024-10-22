@@ -52,10 +52,10 @@ export async function deleteSuite(body: TestSuite.DeleteSuiteBody, options?: { [
   });
 }
 
-/** 查询测试套件 POST /api/auto_pytest/get_suite_list */
+/** 查询测试套件 GET /api/auto_pytest/get_suite_list */
 export async function getSuiteList(body: TestSuite.GetSuitesParams, options?: { [key: string]: any }) {
   return request<TestSuite.GetSuitesResponse>('/api/auto_pytest/get_suite_list', {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },

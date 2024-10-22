@@ -3,7 +3,7 @@ import { getCase, syncTestCase, getCaseSence } from '@/services/test_case';
 import { deleteProject } from '@/services/test_project';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable, TableDropdown } from '@ant-design/pro-components';
+import { ProTable, TableDropdown, PageContainer,ProCard } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import { Button, message } from 'antd';
 import { useRef } from 'react';
@@ -77,6 +77,7 @@ export default () => {
       title: '标签',
       dataIndex: 'tags',
       valueType: 'select',
+      hideInTable: true,
       // 这里定义可选项
       valueEnum: {
         featureA: { text: '特性 A' },
@@ -116,6 +117,7 @@ export default () => {
       title: 'case标签',
       dataIndex: 'tags',
       ellipsis: true,
+      hideInTable: true,
       render: (text, record) => {
         // 检查 tags 是否存在，如果不存在则返回 '无'
         return record.tags && record.tags.length > 0 ? record.tags.join(', ') : '无';
@@ -198,78 +200,84 @@ export default () => {
   ];
 
   return (
-    <ProTable<TestCase.GetCaseSingle, TestCase.GetCaseResponse>
-      columns={columns}
-      actionRef={actionRef}
-      cardBordered
-      request={async (params, sort, filter) => {
-        console.log(sort, filter);
-        // await waitTime(20);
-        const res = await getCase(params);
-        console.log(res);
-        return res;
-      }}
-      editable={{
-        type: 'multiple', //这个是允许多行编辑的意思
-        onSave: async (key, row) => {
-          console.log('key:', key);
-          console.log('row:', row);
-          //   console.log(key, row);
-          await updateTestMoudle(row);
-          message.success('更新成功');
-        },
-      }}
-      columnsState={{
-        persistenceKey: 'pro-table-singe-demos',
-        persistenceType: 'localStorage',
-        defaultValue: {
-          option: { fixed: 'right', disable: true },
-        },
-        onChange(value) {
-          // console.log('value: ', value);
-        },
-      }}
-      rowKey="id"
-      search={{
-        labelWidth: 'auto',
-      }}
-      options={{
-        setting: {
-          listsHeight: 400,
-        },
-      }}
-      pagination={{
-        defaultCurrent: 1,
-        showSizeChanger: true,
-        onShowSizeChange: (current, pageSize) => {
-          // console.log(current, pageSize);
-        },
-        showQuickJumper: true,
-        // pageSize: 5,
-        // onChange: (page) => console.log(page),
-      }}
-      dateFormatter="string"
-      headerTitle="测试模块"
-      toolBarRender={() => [
-        <Button
-          key="button"
-          icon={<PlusOutlined />}
-          onClick={async () => {
-            try {
-              const res = await syncTestMoudle();
-              console.log(res);
-              message.success('同步测试模块成功');
-              // message.info(`响应数据: ${JSON.stringify(res, null, 2)}`);
-            } catch (error) {
-              console.error('同步测试模块失败:', error);
-            }
-            actionRef.current?.reload();
+    <PageContainer
+      header={{ title: false }}
+    >
+      <ProCard>
+        <ProTable<TestCase.GetCaseSingle, TestCase.GetCaseResponse>
+          columns={columns}
+          actionRef={actionRef}
+          cardBordered
+          request={async (params, sort, filter) => {
+            console.log(sort, filter);
+            // await waitTime(20);
+            const res = await getCase(params);
+            console.log(res);
+            return res;
           }}
-          type="primary"
-        >
-          同步测试模块
-        </Button>,
-      ]}
-    />
+          editable={{
+            type: 'multiple', //这个是允许多行编辑的意思
+            onSave: async (key, row) => {
+              console.log('key:', key);
+              console.log('row:', row);
+              //   console.log(key, row);
+              await updateTestMoudle(row);
+              message.success('更新成功');
+            },
+          }}
+          columnsState={{
+            persistenceKey: 'pro-table-singe-demos',
+            persistenceType: 'localStorage',
+            defaultValue: {
+              option: { fixed: 'right', disable: true },
+            },
+            onChange(value) {
+              // console.log('value: ', value);
+            },
+          }}
+          rowKey="id"
+          search={{
+            labelWidth: 'auto',
+          }}
+          options={{
+            setting: {
+              listsHeight: 400,
+            },
+          }}
+          pagination={{
+            defaultCurrent: 1,
+            showSizeChanger: true,
+            onShowSizeChange: (current, pageSize) => {
+              // console.log(current, pageSize);
+            },
+            showQuickJumper: true,
+            // pageSize: 5,
+            // onChange: (page) => console.log(page),
+          }}
+          dateFormatter="string"
+          headerTitle="测试模块"
+          toolBarRender={() => [
+            <Button
+              key="button"
+              icon={<PlusOutlined />}
+              onClick={async () => {
+                try {
+                  const res = await syncTestMoudle();
+                  console.log(res);
+                  message.success('同步测试模块成功');
+                  // message.info(`响应数据: ${JSON.stringify(res, null, 2)}`);
+                } catch (error) {
+                  console.error('同步测试模块失败:', error);
+                }
+                actionRef.current?.reload();
+              }}
+              type="primary"
+            >
+              同步测试模块
+            </Button>,
+          ]}
+        />
+      </ProCard>
+    </PageContainer>
   );
 };
