@@ -6,6 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import { Button, message, Tooltip } from 'antd';
 import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 export const waitTimePromise = async (time: number = 10) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -88,7 +89,8 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
         onClick={() => {
           console.log(record);
           console.log(action);
-          action?.startEditable?.(record.id);
+          // action?.startEditable?.(record.id);
+          history.push(`/openapitest/syncsuite/${record.id}`);
         }}
       >
         编辑
@@ -144,6 +146,10 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
 
 export default () => {
   const actionRef = useRef<ActionType>();
+  useEffect(() => {
+    message.info('请不要随意调用删除按钮,因为真的会把我的测试数据删除掉');
+  })
+  
   return (
     <ProTable<ProjectApi.ProjectDesc, ProjectApi.ProjectParams>
       columns={columns}
@@ -202,25 +208,25 @@ export default () => {
           icon={<PlusOutlined />}
           onClick={() => {
             // actionRef.current?.reload();
-            history.push('/project/create');
+            history.push('/openapitest/createcasesuite');
           }}
           type="primary"
         >
           新建
         </Button>,
-        <Tooltip title="根据测试场景,同步case到测试套件">
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              // actionRef.current?.reload();
-              history.push('/project/create');
-            }}
-            type="primary"
-          >
-            同步
-          </Button>
-        </Tooltip>,
+        // <Tooltip title="根据测试场景,同步case到测试套件">
+        //   <Button
+        //     key="button"
+        //     icon={<PlusOutlined />}
+        //     onClick={() => {
+        //       // actionRef.current?.reload();
+        //       history.push('/project/create');
+        //     }}
+        //     type="primary"
+        //   >
+        //     同步
+        //   </Button>
+        // </Tooltip>,
       ]}
     />
   );

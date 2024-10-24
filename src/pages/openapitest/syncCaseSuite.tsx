@@ -1,15 +1,18 @@
 import { getProjectList } from '@/services/test_project';
-import { getSuiteList,createSuite } from '@/services/test_suite';
+import { getSuiteList,createSuite,syncSuiteByCaseIds } from '@/services/test_suite';
 import { getCase, syncTestCase, getCaseSence } from '@/services/test_case';
 import {
   PageContainer,
   ProCard,
   ProForm,
   ProFormText,
+  ProFormDigit,
   ProFormInstance,
   ProFormSelect,} from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import { Col, Row, Space, message } from 'antd';
+import { useParams } from '@umijs/max';
+
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 
@@ -89,6 +92,9 @@ export default () => {
     getProject();
   }, []);
 
+  const params = useParams();
+  const id = params.id; // 获取具体的 ID
+
   return (
     <PageContainer header={{ title: false }}>
       <ProCard>
@@ -115,7 +121,7 @@ export default () => {
             console.log('validateFields:', val1);
             const val2 = await formRef.current?.validateFieldsReturnFormatValue?.();
             console.log('validateFieldsReturnFormatValue:', val2);
-            const res = await createSuite(values);
+            const res = await syncSuiteByCaseIds(values);
             console.log(res);
             message.success('提交成功:');
             // 跳转回项目列表页面
@@ -124,13 +130,33 @@ export default () => {
           formRef={formRef}
           params={{}}
           request={async () => {
-            await waitTime(100);
+            // await waitTime(100);
+            const res = await getSuiteList({ id: id });
+            console.log('res1', res);
+            let casesen: string[] = [];
+
+            // 确保 res.data[0].case_sences 存在，并尝试解析
+            if (res.data[0].case_sences) {
+              try {
+                casesen = JSON.parse(res.data[0].case_sences);
+              } catch (error) {
+                console.error('解析失败:', error);
+                casesen = []; // 解析失败则赋值为空数组
+              }
+            }
+
             return {
-              project_name: '测试模块-线上线下-接口UI性能测试',
+              id: res.data[0].id,
+              suite_name: res.data[0].suite_name,
+              projectid: res.data[0].project?.id,
+              projectname: res.data[0].project?.project_name,
+              case_sences: casesen,
+              describe: res.data[0].describe,
               // useMode: 'chapter',
             };
           }}
         >
+          <ProFormDigit name="id" label="套件ID" width="lg" disabled />
           <ProFormText
             width="md"
             name="suite_name"
@@ -147,12 +173,27 @@ export default () => {
               ],
             }}
           />
+          <ProFormDigit
+            key="projectid"
+            width="md"
+            name="projectid"
+            label="所属项目id"
+            disabled
+          />
+          <ProFormText
+            key="projectname"
+            width="md"
+            name="projectname"
+            label="所属项目名称"
+            disabled
+          />
           <ProFormSelect
             key="project"
             options={projectList}
             width="md"
             name="project"
-            label="测试套件所属项目"
+            label="修改项目"
+            tooltip="如需改动,则选择相应的项目"
             // mode="multiple" // 是多个值还是单个值
           />
 

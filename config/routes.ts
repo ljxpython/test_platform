@@ -34,7 +34,7 @@ export default [
     path: '/goods',
     name: 'goods',
     icon: 'smile',
-    hideInMenu: true,  // 隐藏菜单
+    hideInMenu: true, // 隐藏菜单
     // component: "./Goods",
     routes: [
       {
@@ -171,7 +171,7 @@ export default [
         hideInMenu: true, // 隐藏菜单
         component: './openapitest/caseDetail',
       },
-            {
+      {
         path: '/openapitest/casesuitelist',
         name: 'casesuitelist',
         component: './openapitest/caseSuiteList',
@@ -179,12 +179,20 @@ export default [
       {
         path: '/openapitest/createcasesuite',
         name: 'createcasesuite',
+        hideInMenu: true, // 隐藏菜单
         component: './openapitest/createCaseSuite',
       },
       {
         path: '/openapitest/casesuitedetaile/:id',
-        name: 'casemoudledtaile',
+        name: 'casesuitedtaile',
+        hideInMenu: true, // 隐藏菜单
         component: './openapitest/caseSuiteDetail',
+      },
+      {
+        path: '/openapitest/syncsuite/:id',
+        name: 'synccasedetaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/syncCaseSuite',
       },
       {
         path: '/openapitest/test',

@@ -22,7 +22,7 @@ const InfoCard_ = () => {
   }
 
   return (
-    <Card title={`Case ${id} 详情`} style={{ margin: '20px' }}>
+    <Card title={`套件 ${id} 详情`} style={{ margin: '20px' }}>
       <Descriptions bordered column={1}>
         {Object.keys(dataSource).map((key) => (
           <Descriptions.Item label={key.replace('_', ' ').toUpperCase()} key={key}>
