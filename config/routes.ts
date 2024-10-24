@@ -176,10 +176,15 @@ export default [
         name: 'casesuitelist',
         component: './openapitest/caseSuiteList',
       },
-                  {
+      {
         path: '/openapitest/createcasesuite',
         name: 'createcasesuite',
         component: './openapitest/createCaseSuite',
+      },
+      {
+        path: '/openapitest/casesuitedetaile/:id',
+        name: 'casemoudledtaile',
+        component: './openapitest/caseSuiteDetail',
       },
       {
         path: '/openapitest/test',

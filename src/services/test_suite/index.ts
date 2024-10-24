@@ -59,7 +59,9 @@ export async function getSuiteList(body: TestSuite.GetSuitesParams, options?: { 
     headers: {
       'Content-Type': 'application/json',
     },
-    data: body,
+    params: {
+      ...body,
+    },
     ...(options || {}),
   });
 }

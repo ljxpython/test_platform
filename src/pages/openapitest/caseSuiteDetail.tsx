@@ -1,17 +1,16 @@
-import { getCase } from '@/services/test_case';
 import { getSuiteList } from '@/services/test_suite';
-import { Card, Descriptions, Spin } from 'antd';
 import { useParams } from '@umijs/max';
+import { Card, Descriptions, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 
-const InfoCard = () => {
+const InfoCard_ = () => {
   const [dataSource, setDataSource] = useState(null); // 使用 null 初始化
   const params = useParams();
   const id = params.id; // 获取具体的 ID
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await getCase({ id: params.id });
+      const data = await getSuiteList({ id: params.id });
       console.log(data);
       setDataSource(data.data ? data.data[0] : null); // 假设只需要第一个对象
     };
@@ -41,4 +40,4 @@ const InfoCard = () => {
   );
 };
 
-export default InfoCard;
+export default InfoCard_;

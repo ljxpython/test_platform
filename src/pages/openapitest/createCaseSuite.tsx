@@ -1,11 +1,6 @@
-import { createProject } from '@/services/test_project';
-import {
-  createSuite,
-  updateSuite,
-  syncSuiteByCaseIds,
-  deleteSuite,
-  getSuiteList,
-} from '@/services/test_suite';
+import { getProjectList } from '@/services/test_project';
+import { getSuiteList } from '@/services/test_suite';
+
 import {
   PageContainer,
   ProCard,

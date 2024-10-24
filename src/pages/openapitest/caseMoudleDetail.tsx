@@ -1,45 +1,45 @@
 import { getProjectList } from '@/services/test_project';
 import { syncTestMoudle, updateTestMoudle, queryTestMoudle } from '@/services/test_moudle';
-import { ProTable } from '@ant-design/pro-components';
+import { getSuiteList } from '@/services/test_suite';
+import { Card, Descriptions, Spin } from 'antd';
 import { useParams } from '@umijs/max';
 import { useEffect, useState } from 'react';
 
-
-const DynamicTable = () => {
-  const [dataSource, setDataSource] = useState([]);
-  let params = useParams();
-  console.log(params.id); // 打印出路由参数中的id
+const InfoCard = () => {
+  const [dataSource, setDataSource] = useState(null); // 使用 null 初始化
+  const params = useParams();
   const id = params.id; // 获取具体的 ID
 
   useEffect(() => {
     const loadData = async () => {
-        const data = await queryTestMoudle({ id: params.id });
-        console.log(data);
-
-      // const data = await fetchData();
-      setDataSource(data.data);
-      console.log(data.data);
+      const data = await queryTestMoudle({ id: params.id });
+      console.log(data);
+      setDataSource(data.data ? data.data[0] : null); // 假设只需要第一个对象
     };
     loadData();
-  }, []);
+  }, [params.id]); // 依赖 params.id
+
+  if (!dataSource) {
+    return <Spin tip="加载中..." style={{ margin: '20px' }} />; // 使用 Spin 显示加载状态
+  }
 
   return (
-    <ProTable
-      columns={Object.keys(dataSource[0] || {}).map((key) => ({
-        title: key.replace('_', ' ').toUpperCase(), // 将下划线替换为空格并转换为大写
-        dataIndex: key,
-        ellipsis: true,
-      }))}
-      dataSource={dataSource}
-      rowKey="id"
-      pagination={{
-        showSizeChanger: true,
-        showQuickJumper: true,
-      }}
-      search={false} // 如果不需要搜索功能
-      headerTitle={`测试模块 ${id} 详情`} // 动态设置标题
-    />
+    <Card title={`Case ${id} 详情`} style={{ margin: '20px' }}>
+      <Descriptions bordered column={1}>
+        {Object.keys(dataSource).map((key) => (
+          <Descriptions.Item label={key.replace('_', ' ').toUpperCase()} key={key}>
+            {typeof dataSource[key] === 'object' && dataSource[key] !== null ? (
+              <pre>{JSON.stringify(dataSource[key], null, 2)}</pre>
+            ) : dataSource[key] !== null && dataSource[key] !== undefined ? (
+              dataSource[key]
+            ) : (
+              '无'
+            )}
+          </Descriptions.Item>
+        ))}
+      </Descriptions>
+    </Card>
   );
 };
 
-export default DynamicTable;
+export default InfoCard;

@@ -59,5 +59,16 @@ export interface GetCaseResponse {
     msg: string;
     success: boolean;
   }
+
+	// 获取case_sence
+	export interface caseSencesList {
+	case_sences: string[];
+}
+
+export interface GetCaseSenceResponse {
+	data: caseSencesList;
+	msg: string;
+	success: boolean;
+}
     
 }

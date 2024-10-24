@@ -36,4 +36,17 @@ export async function getCaseSence(data: any,options?: { [key: string]: any },) 
   });
 }
 
+/** 查询测试case场景 GET /api/auto_pytest/get_case_sence */
+export async function queryTestMoudle(params: any,options?: { [key: string]: any },) {
+  return request<TestCase.GetCaseSenceResponse>('/api/auto_pytest/get_case_moudle', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params,
+    ...(options || {}),
+  });
+}
+
+
 

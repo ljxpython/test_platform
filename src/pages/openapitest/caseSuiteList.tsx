@@ -53,6 +53,15 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
     tooltip: '场景过长会自动收缩',
   },
   {
+    title: '所属项目',
+    dataIndex: 'project',
+    ellipsis: true,
+    copyable: true,
+    render: (text, record) => {
+      return record.project ? record.project.project_name : '无'; // 处理可能的 undefined
+    },
+  },
+  {
     title: '创建时间',
     key: 'showTime',
     dataIndex: 'add_time',
@@ -86,7 +95,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
       </a>,
       <a
         onClick={() => {
-          history.push(`/project/detail/${record.id}`);
+          history.push(`/openapitest/casesuitedetaile/${record.id}`);
         }}
         target="_blank"
         rel="noopener noreferrer"
@@ -116,7 +125,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
             console.log('delete');
             console.log(record);
             (async () => {
-              const res = await deleteProject({ ...record });
+              const res = await deleteSuite({ ...record });
               message.success('删除成功');
               action?.reload();
               console.log(res);
@@ -174,18 +183,7 @@ export default () => {
           listsHeight: 400,
         },
       }}
-      //   form={{
-      //     // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
-      //     syncToUrl: (values, type) => {
-      //       if (type === 'get') {
-      //         return {
-      //           ...values,
-      //           created_at: [values.startTime, values.endTime],
-      //         };
-      //       }
-      //       return values;
-      //     },
-      //   }}
+
       pagination={{
         defaultCurrent: 1,
         showSizeChanger: true,
