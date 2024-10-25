@@ -97,6 +97,16 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
       </a>,
       <a
         onClick={() => {
+          history.push(`/openapitest/runcasesuite/${record.id}`);
+        }}
+        target="_blank"
+        rel="noopener noreferrer"
+        key="view"
+      >
+        运行
+      </a>,
+      <a
+        onClick={() => {
           history.push(`/openapitest/casesuitedetaile/${record.id}`);
         }}
         target="_blank"

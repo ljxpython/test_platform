@@ -195,10 +195,34 @@ export default [
         component: './openapitest/syncCaseSuite',
       },
       {
+        path: '/openapitest/runcasesuite/:id',
+        name: 'runcasesuite',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/runCaseSuite',
+      },
+      {
         path: '/openapitest/test',
         name: 'test',
         // hideInMenu: true, // 隐藏菜单
         component: './openapitest/test',
+      },
+      {
+        path: '/openapitest/caseplanlist',
+        name: 'caseplanlist',
+        // hideInMenu: true, // 隐藏菜单
+        component: './openapitest/casePlanList',
+      },
+      {
+        path: '/openapitest/createcaseplan',
+        name: 'createcaseplan',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/createCasePlan',
+      },
+      {
+        path: '/openapitest/caseplandetaile/:id',
+        name: 'caseplandetaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/casePlanDetail',
       },
     ],
   },
