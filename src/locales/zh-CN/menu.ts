@@ -38,6 +38,7 @@ export default {
   'menu.openapitest.createcaseplan': '创建测试计划',
   'menu.openapitest.caseplandetaile': '测试计划详情',
   'menu.openapitest.case': '接口测试用例',
+  'menu.openapitest.resultlist': '接口测试结果列表',
   'menu.openapitest.test': '测试验证',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',

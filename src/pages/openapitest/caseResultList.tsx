@@ -94,7 +94,7 @@ export default () => {
       dataIndex: 'title',
       copyable: true,
       ellipsis: true,
-      width: 100,
+      width: 2,
       //   tooltip: '测试计划名称过长会自动收缩',
       valueType: 'text',
     },
@@ -133,9 +133,45 @@ export default () => {
           dataIndex: 'report_link',
           copyable: true,
           ellipsis: true,
-          valueType: 'text',    
+        valueType: 'text',  
+          render: (_, record) => {
+            return record.report_link ? (
+      <a
+        href={record.report_link}
+        target="_blank"
+        rel="noopener noreferrer"
+        key="view"
+      >
+        测试报告
+      </a>
+    ) : (
+      <span>暂无</span> // 当没有 report_link 时显示“无”
+    );
+          }
           
-      },
+    },
+    {
+      title: '测试报告下载',
+      dataIndex: 'report_download',
+      copyable: true,
+      ellipsis: true,
+      valueType: 'text',
+      render: (_, record) => {
+        return record.report_download ? (
+          <a
+            href={record.report_download}
+            target="_blank"
+            rel="noopener noreferrer"
+            key="view"
+          >
+            下载报告
+          </a>
+        ) : (
+          <span>暂无</span> // 当没有 report_download 时显示“无”
+        );
+      }
+      
+    },
     {
       title: '测试环境',
       dataIndex: 'test_env',
@@ -148,45 +184,40 @@ export default () => {
       },
     },
     {
-      title: '开启状态',
-      dataIndex: 'is_open',
+      title: '测试类型',
+      dataIndex: 'test_type',
       valueType: 'select',
       fieldProps: {
         options: [
-          { label: '开启', value: 'off' },
-          { label: '关闭', value: 'on' },
+          { label: '手工测试', value: 'manual' },
+          { label: '自动化触发', value: 'webhook' },
+          { label: '定时任务', value: 'cron' },
         ],
       },
-      render: (_, record) => {
-        console.log('record', record);
-        return (
-          <Button
-            //   type="primary"
-            onClick={() => {
-              //   console.log('record', record);
-              handleOpenModal(record);
-            }}
-          >
-            {record.is_open}
-          </Button>
-        );
-      },
+
     },
     {
-      title: '测试cron',
-      dataIndex: 'cron',
-      copyable: true,
+      title: '测试任务id',
+      dataIndex: 'task_id',
       valueType: 'text',
+
+      
     },
     {
       title: '测试计划id',
-      width: 100,
       dataIndex: 'plan_id',
-      copyable: true,
-      ellipsis: true,
       valueType: 'text',
-    },
+      tooltip: '只有定时任务才会有值,其余类型为空',
 
+
+    },
+    {
+      title: '执行测试人员',
+      dataIndex: 'test_user',
+      valueType: 'text',
+
+      
+    },
     {
       title: '更新时间',
       key: 'updateTime',
@@ -274,7 +305,7 @@ export default () => {
             request={async (params, sort, filter) => {
               console.log(sort, filter);
               // await waitTime(20);
-              const res = await listCasePlant(params);
+              const res = await getCaseResult(params);
               console.log(res);
               return res;
             }}

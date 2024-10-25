@@ -200,12 +200,7 @@ export default [
         hideInMenu: true, // 隐藏菜单
         component: './openapitest/runCaseSuite',
       },
-      {
-        path: '/openapitest/test',
-        name: 'test',
-        // hideInMenu: true, // 隐藏菜单
-        component: './openapitest/test',
-      },
+
       {
         path: '/openapitest/caseplanlist',
         name: 'caseplanlist',
@@ -223,6 +218,17 @@ export default [
         name: 'caseplandetaile',
         hideInMenu: true, // 隐藏菜单
         component: './openapitest/casePlanDetail',
+      },
+      {
+        path: '/openapitest/resultlist',
+        name: 'resultlist',
+        component: './openapitest/caseResultList',
+      },
+      {
+        path: '/openapitest/test',
+        name: 'test',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/test',
       },
     ],
   },
