@@ -1,4 +1,5 @@
 import { getCase } from '@/services/test_case';
+import { getSuiteList } from '@/services/test_suite';
 import { getLocustCase, syncLocustCase, deleteLocustCase } from '@/services/locust_case';
 import { Card, Descriptions, Spin } from 'antd';
 import { useParams } from '@umijs/max';
@@ -11,7 +12,7 @@ const InfoCard = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await getCase({ id: params.id });
+      const data = await getLocustCase({ id: params.id });
       console.log(data);
       setDataSource(data.data ? data.data[0] : null); // 假设只需要第一个对象
     };

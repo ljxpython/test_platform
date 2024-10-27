@@ -37,7 +37,7 @@ declare namespace LocustCase {
     moudle_list: string[];
   }
     // delete_locust_case 删除测试case params
-  interface DeleteLocustCaseParams {
+  interface DeleteLocustCaseBody {
     id: number;
   }
     // delete_locust_case 删除测试case Response

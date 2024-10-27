@@ -1,5 +1,5 @@
 import { queryTestMoudle, syncTestMoudle, updateTestMoudle } from '@/services/test_moudle';
-import { getCase, syncTestCase, getCaseSence } from '@/services/test_case';
+import { getLocustCase, syncLocustCase, deleteLocustCase } from '@/services/locust_case';
 import { deleteProject } from '@/services/test_project';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -25,29 +25,6 @@ export const waitTime = async (time: number = 10) => {
 
 export default () => {
   const actionRef = useRef<ActionType>();
-  const [casesence, setCasesence] = useState<string[]>([]); // 初始化为空数组
-  const getcasesence = async () => {
-    try {
-      let data = await getCaseSence({});
-      console.log(data);
-      console.log('case_sence_list', data.data.case_sence_list);
-      setCasesence(data.data.case_sence_list);
-      // console.log('获取casesence的值', casesence);
-    } catch (error) {
-      console.error('获取选项失败:', error);
-    }
-  };
-
-  // 下面两个useEffect是用于获取casesence的值,我到现在也不知道为什么要写两个
-  // 使用 useEffect 监听 casesence 的变化
-  useEffect(() => {
-    console.log('获取casesence的值', casesence);
-  }, [casesence]); // 依赖于 casesence，任何变化都会打印
-
-  // 在组件加载时调用 getcasesence
-  useEffect(() => {
-    getcasesence();
-  }, []);
 
   const columns: ProColumns<TestCase.GetCaseSingle>[] = [
     {
@@ -56,60 +33,34 @@ export default () => {
       width: 48,
     },
     {
-      title: '测试case id',
+      title: '压测caseid',
       dataIndex: 'id',
       hideInTable: true, // 这个相当于在列表中查找不到,但是可以搜索到这个项目
     },
     {
       title: '测试场景',
       dataIndex: 'case_sence',
-      valueType: 'select',
-      fieldProps: {
-        options: casesence,
-        mode: 'multiple',
-      },
-      // valueEnum: valueEnum,
-      width: 100,
-      // valueType: 'treeSelect',
+      valueType: 'text',
+      // width: 100,
       copyable: true,
     },
     {
-      title: '标签',
-      dataIndex: 'tags',
-      valueType: 'select',
-      hideInTable: true,
-      // 这里定义可选项
-      valueEnum: {
-        featureA: { text: '特性 A' },
-        featureB: { text: '特性 B' },
-        featureC: { text: '特性 C' },
-      },
-      // 使用 fieldProps 来实现多选
-      fieldProps: {
-        // mode: 'multiple', // 设置为多选模式,默认是单选
-      },
-    },
-    {
-      title: '模块名称',
+      title: '压测模块名称',
       dataIndex: 'moudle',
       copyable: true,
       ellipsis: true,
       tooltip: '测试模块过长会自动收缩',
       editable: false,
-      render: (text, record) => {
-        // 返回 record.casemoudle.moudle 字段的值
-        return record.casemoudle ? record.casemoudle.moudle : '无'; // 处理可能的 undefined
-      },
     },
-    {
-      title: 'case函数名',
-      dataIndex: 'case_func',
-      editable: false,
-    },
+    // {
+    //   title: 'case函数名',
+    //   dataIndex: 'case_func',
+    //   editable: false,
+    // },
 
     {
       title: 'case描述',
-      dataIndex: 'case_func_desc',
+      dataIndex: 'path_desc',
       ellipsis: true,
       tooltip: 'case描述过长会自动收缩',
     },
@@ -150,7 +101,7 @@ export default () => {
         // </a>,
         <a
           onClick={() => {
-            history.push(`/openapitest/casedetaile/${record.id}`);
+            history.push(`/locust/locustcasedetaile/${record.id}`);
             console.log('record', record);
             console.log('text', text);
           }}
@@ -182,7 +133,7 @@ export default () => {
               console.log('delete');
               console.log(record);
               (async () => {
-                const res = await deleteProject({ ...record });
+                const res = await deleteLocustCase({ ...record });
                 message.success('删除成功');
                 action?.reload();
                 console.log(res);
@@ -192,7 +143,7 @@ export default () => {
           }}
           menus={[
             { key: 'copy', name: '复制' },
-            //   { key: 'delete', name: '删除' },
+              { key: 'delete', name: '删除' },
           ]}
         />,
       ],
@@ -204,14 +155,14 @@ export default () => {
       header={{ title: false }}
     >
       <ProCard>
-        <ProTable<TestCase.GetCaseSingle, TestCase.GetCaseResponse>
+        <ProTable<LocustCase.LocustCaseMsg, LocustCase.GetLocustCaseResponse>
           columns={columns}
           actionRef={actionRef}
           cardBordered
           request={async (params, sort, filter) => {
             console.log(sort, filter);
             // await waitTime(20);
-            const res = await getCase(params);
+            const res = await getLocustCase(params);
             console.log(res);
             return res;
           }}
@@ -262,12 +213,12 @@ export default () => {
               icon={<PlusOutlined />}
               onClick={async () => {
                 try {
-                  const res = await syncTestCase();
+                  const res = await syncLocustCase();
                   console.log(res);
-                  message.success('同步测试case成功');
+                  message.success('同步压测case成功');
                   // message.info(`响应数据: ${JSON.stringify(res, null, 2)}`);
                 } catch (error) {
-                  console.error('同步测试模块失败:', error);
+                  console.error('同步测试case失败:', error);
                 }
                 actionRef.current?.reload();
               }}

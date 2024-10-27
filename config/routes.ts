@@ -248,6 +248,17 @@ export default [
         redirect: '/locust/list',
       },
       {
+        path: '/locust/locustcaselist',
+        name: 'locustcaselist',
+        component: './LocustTest/case/caseList',
+      },
+      {
+        path: '/locust/locustcasedetaile/:id',
+        name: 'locustcasedetaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './LocustTest/case/caseDetail',
+      },
+      {
         path: '/locust/list',
         name: 'list',
         component: './LocustTest/List',
