@@ -208,6 +208,21 @@ export default () => {
       dataIndex: 'plan_id',
       valueType: 'text',
       tooltip: '只有定时任务才会有值,其余类型为空',
+      render: (_, record) => {
+        return record.plan_id ? (
+          <a
+            href={`/openapitest/caseplandetaile/${record.plan_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            key="view"
+          >
+            {record.plan_id}
+          </a>
+        ) : (
+          <span>无</span> // 当没有 plan_id 时显示“无”
+        ); 
+          
+      }
 
 
     },

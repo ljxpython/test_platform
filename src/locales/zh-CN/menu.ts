@@ -36,6 +36,8 @@ export default {
   'menu.openapitest.casemoudledtaile': '接口测试模块详情',
   'menu.openapitest.caseplanlist': '接口测试计划列表',
   'menu.openapitest.createcaseplan': '创建测试计划',
+  'menu.openapitest.synccaseplan': '更新测试计划',
+  'menu.openapitest.synccasesuite': '更新测试套件',
   'menu.openapitest.caseplandetaile': '测试计划详情',
   'menu.openapitest.case': '接口测试用例',
   'menu.openapitest.resultlist': '接口测试结果列表',

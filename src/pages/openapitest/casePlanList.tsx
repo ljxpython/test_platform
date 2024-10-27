@@ -196,16 +196,14 @@ const handleOk = async () => {
       valueType: 'option',
       key: 'option',
       render: (text, record, _, action) => [
-        // <a
-        //   key="editable"
-        //   onClick={() => {
-        //     console.log(record);
-        //     console.log(action);
-        //     action?.startEditable?.(record.id);
-        //   }}
-        // >
-        //   编辑
-        // </a>,
+        <a
+          key="syncepaln"
+          onClick={() => {
+            history.push(`/openapitest/synccaseplan/${record.id}`);
+          }}
+        >
+          更新
+        </a>,
         <a
           onClick={() => {
             history.push(`/openapitest/caseplandetaile/${record.id}`);
@@ -218,6 +216,7 @@ const handleOk = async () => {
         >
           查看
         </a>,
+
         <TableDropdown
           key="actionGroup"
           //   onSelect={() => action?.reload()} // 这个是重置的实现

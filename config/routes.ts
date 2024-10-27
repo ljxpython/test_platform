@@ -190,7 +190,7 @@ export default [
       },
       {
         path: '/openapitest/syncsuite/:id',
-        name: 'synccasedetaile',
+        name: 'synccasesuite',
         hideInMenu: true, // 隐藏菜单
         component: './openapitest/syncCaseSuite',
       },
@@ -218,6 +218,12 @@ export default [
         name: 'caseplandetaile',
         hideInMenu: true, // 隐藏菜单
         component: './openapitest/casePlanDetail',
+      },
+      {
+        path: '/openapitest/synccaseplan/:id',
+        name: 'synccaseplan',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/syncCasePlan',
       },
       {
         path: '/openapitest/resultlist',

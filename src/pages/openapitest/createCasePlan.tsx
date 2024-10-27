@@ -15,9 +15,12 @@ import {
   ProFormInstance,
   ProFormSelect,
   ProFormText,
+  
 } from '@ant-design/pro-components';
+import { CopyOutlined } from '@ant-design/icons';
+
 import { history } from '@umijs/max';
-import { Col, Row, Space, message } from 'antd';
+import { Col, Row, Space, message, Descriptions, Tooltip, Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
 type LayoutType = Parameters<typeof ProForm>[0]['layout'];
@@ -232,23 +235,51 @@ export default () => {
             }
             tooltip="相关语法请参考:https://en.wikipedia.org/wiki/Cron"
           ></ProFormText>
-
-          {/* <ProFormSelect
-            key="case_sences"
-            options={casesence}
-            width="md"
-            name="case_sences"
-            label="测试场景"
-            mode="multiple" // 是多个值还是单个值
-          />
-
-          <ProFormText
-            width="md"
-            name="describe"
-            label="套件描述"
-            // placeholder="格式:成员1 成员2 ..."
-            // rules={[{ required: true, message: '请描述清该套件的用途!' }]}
-          /> */}
+          <ProCard title="cron常见用法" style={{ margin: '20px' }}>
+            <Descriptions bordered column={1}>
+              {[
+                { cron: '* * * * *', description: '每分钟执行一次' },
+                { cron: '0 * * * *', description: '每小时执行一次' },
+                { cron: '0 0 * * *', description: '每天午夜执行' },
+                { cron: '0 0 * * 1', description: '每周一执行' },
+                { cron: '0 0 1 * *', description: '每月的第一天执行' },
+                { cron: '15 * * * *', description: '每小时的第15分钟执行' },
+                { cron: '0 9-17 * * *', description: '每天上午 9 点到 5 点每小时执行一次' },
+                { cron: '*/5 * * * *', description: '每 5 分钟执行一次' },
+                { cron: '0 0 L * *', description: '每月的最后一天执行' },
+                { cron: '0 0 * * 0', description: '每周的最后一天（星期天）执行' },
+              ].map(({ cron, description }) => (
+                <Descriptions.Item
+                  label={
+                    <span style={{ width: '100px', display: 'inline-block' }}>{description}</span>
+                  }
+                  key={cron}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span>{cron}</span>
+                    <Tooltip title="复制">
+                      <Button
+                        type="link"
+                        icon={<CopyOutlined />}
+                        onClick={() => {
+                          navigator.clipboard
+                            .writeText(cron)
+                            .then(() => {
+                              // 可选：在此处添加成功提示
+                              console.log('复制成功:', cron);
+                            })
+                            .catch((err) => {
+                              console.error('复制失败:', err);
+                            });
+                        }}
+                        style={{ marginLeft: '10px' }}
+                      />
+                    </Tooltip>
+                  </div>
+                </Descriptions.Item>
+              ))}
+            </Descriptions>
+          </ProCard>
         </ProForm>
       </ProCard>
     </PageContainer>

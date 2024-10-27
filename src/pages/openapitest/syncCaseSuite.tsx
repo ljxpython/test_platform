@@ -116,6 +116,10 @@ export default () => {
           }}
           onFinish={async (values) => {
             await waitTime(200);
+            // 检查 projectid 是否存在,如果存在，则添加 project 键
+            if (values.projectid) {
+              values.project = values.projectid; // 增加项目的键，值与 projectid 相同
+            }
             console.log(values);
             const val1 = await formRef.current?.validateFields();
             console.log('validateFields:', val1);
@@ -173,7 +177,7 @@ export default () => {
               ],
             }}
           />
-          <ProFormDigit
+          {/* <ProFormDigit
             key="projectid"
             width="md"
             name="projectid"
@@ -186,13 +190,13 @@ export default () => {
             name="projectname"
             label="所属项目名称"
             disabled
-          />
+          /> */}
           <ProFormSelect
             key="project"
             options={projectList}
             width="md"
-            name="project"
-            label="修改项目"
+            name="projectid"
+            label="所属项目"
             tooltip="如需改动,则选择相应的项目"
             // mode="multiple" // 是多个值还是单个值
           />
