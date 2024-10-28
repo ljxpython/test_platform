@@ -1,4 +1,9 @@
-import { getSuiteList } from '@/services/test_suite';
+import {
+  createLocustSuite,
+  deleteLocustSuite,
+  queryLocustSuite,
+  syncLocustSuiteByCaseIds,
+} from '@/services/locust_suite';
 import { useParams } from '@umijs/max';
 import { Card, Descriptions, Spin } from 'antd';
 import { useEffect, useState } from 'react';
@@ -10,7 +15,7 @@ const InfoCard_ = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await getSuiteList({ id: params.id });
+      const data = await queryLocustSuite({ id: params.id });
       console.log(data);
       setDataSource(data.data ? data.data[0] : null); // 假设只需要第一个对象
     };

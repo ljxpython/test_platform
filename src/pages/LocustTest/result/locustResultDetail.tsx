@@ -1,4 +1,5 @@
 import { runCaseResultByTime, getCaseResult } from '@/services/test_run';
+import { queryLocustResult } from '@/services/locust_result';
 import { useParams } from '@umijs/max';
 import { Card, Descriptions, Spin } from 'antd';
 import { useEffect, useState } from 'react';
@@ -17,7 +18,7 @@ const InfoCard_ = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await getCaseResult({ id: params.id });
+      const data = await queryLocustResult({ id: params.id });
       console.log(data);
       setDataSource(data.data ? data.data[0] : null); // 假设只需要第一个对象
     };
@@ -29,7 +30,7 @@ const InfoCard_ = () => {
   }
 
   return (
-    <Card title={`套件 ${id} 详情`} style={{ margin: '20px' }}>
+    <Card title={`压测结果 ${id} 详情`} style={{ margin: '20px' }}>
       <Descriptions bordered column={1}>
         {Object.keys(dataSource).map((key) => (
           <Descriptions.Item label={key.replace('_', ' ').toUpperCase()} key={key}>

@@ -1,9 +1,6 @@
-import { getCaseSence } from '@/services/test_case';
-import { updateTestMoudle } from '@/services/test_moudle';
-import { listCasePlant, setCaseResultByCron } from '@/services/test_plan';
-import { runCaseResultByTime,getCaseResult } from '@/services/test_run';
-import { deleteProject } from '@/services/test_project';
+import { queryLocustResult, deleteLocustResult } from '@/services/locust_result';
 import { PlusOutlined } from '@ant-design/icons';
+import { getLocustCase, syncLocustCase, deleteLocustCase } from '@/services/locust_case';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProCard, ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
@@ -25,17 +22,21 @@ export const waitTime = async (time: number = 10) => {
 export default () => {
   const actionRef = useRef<ActionType>();
   const [casesence, setCasesence] = useState<string[]>([]); // 初始化为空数组
-  const getcasesence = async () => {
-    try {
-      let data = await getCaseSence({});
-      console.log(data);
-      console.log('case_sence_list', data.data.case_sence_list);
-      setCasesence(data.data.case_sence_list);
-      // console.log('获取casesence的值', casesence);
-    } catch (error) {
-      console.error('获取选项失败:', error);
-    }
-  };
+
+
+
+const getcasesence = async () => {
+  try {
+    let response = await getLocustCase({});
+    console.log(response);
+    const caseScenes = response.data.map((item) => item.case_sence);
+
+    setCasesence(caseScenes);
+    // console.log('获取casesence的值', casesence);
+  } catch (error) {
+    console.error('获取选项失败:', error);
+  }
+};
 
   // 下面两个useEffect是用于获取casesence的值,我到现在也不知道为什么要写两个
   // 使用 useEffect 监听 casesence 的变化
@@ -53,32 +54,8 @@ export default () => {
   const [visible, setVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
-  const handleOpenModal = (record) => {
-    setCurrentRecord(record);
-    setVisible(true);
-  };
-
-  const handleOk = async () => {
-    if (currentRecord) {
-      // 调用更新状态的接口
-      const newState = currentRecord.is_open === 'on' ? 'off' : 'on';
-      const res = await setCaseResultByCron({
-        id: currentRecord.id,
-        is_open: newState,
-      });
-      // 这里替换为你的更新状态接口调用
-      try {
-        message.success(`状态已更新为: ${newState}`);
-        // 刷新
-        actionRef.current?.reload();
-      } catch (error) {
-        message.error('更新状态失败');
-      }
-      setVisible(false);
-    }
-  };
-
-  const columns: ProColumns<TestRun.CreateCaseResultBody>[] = [
+ 
+  const columns: ProColumns<LocustResult.LocustResultMsg>[] = [
     {
       dataIndex: 'index',
       valueType: 'indexBorder',
@@ -106,49 +83,44 @@ export default () => {
         return (
           <a
             onClick={() => {
-              history.push(`/openapitest/casesuitedetaile/${record.suite}`);
+              history.push(`/locust/locustcasesuitedetaile/${record.locustsuite}`);
             }}
             target="_blank"
             rel="noopener noreferrer"
             key="view"
           >
-            {record.suite}
+            {record.locustsuite}
           </a>
         );
       },
+    },
+    {
+      title: '测试结果',
+      dataIndex: 'result',
+      valueType: 'text',
+      width: 100,
+      valueEnum: {
+        success: { text: '成功', status: 'Success' },
+        FAIL: { text: '失败', status: 'Error' },
+        Done: { text: '完成', status: 'Processing' },
+        Running: { text: '运行中', status: 'Processing' },
       },
-      {
-          title: '测试结果',
-          dataIndex: 'result',
-          valueType: 'text',
-          width: 100,
-          valueEnum: {
-            success: { text: '成功', status: 'Success' },
-            FAIL: { text: '失败', status: 'Error' },
-          },
-        
+    },
+    {
+      title: '测试报告链接',
+      dataIndex: 'report_link',
+      copyable: true,
+      ellipsis: true,
+      valueType: 'text',
+      render: (_, record) => {
+        return record.report_link ? (
+          <a href={record.report_link} target="_blank" rel="noopener noreferrer" key="view">
+            测试报告
+          </a>
+        ) : (
+          <span>暂无</span> // 当没有 report_link 时显示“无”
+        );
       },
-      {
-          title: '测试报告链接',
-          dataIndex: 'report_link',
-          copyable: true,
-          ellipsis: true,
-        valueType: 'text',  
-          render: (_, record) => {
-            return record.report_link ? (
-      <a
-        href={record.report_link}
-        target="_blank"
-        rel="noopener noreferrer"
-        key="view"
-      >
-        测试报告
-      </a>
-    ) : (
-      <span>暂无</span> // 当没有 report_link 时显示“无”
-    );
-          }
-          
     },
     {
       title: '测试报告下载',
@@ -158,24 +130,22 @@ export default () => {
       valueType: 'text',
       render: (_, record) => {
         return record.report_download ? (
-          <a
-            href={record.report_download}
-            target="_blank"
-            rel="noopener noreferrer"
-            key="view"
-          >
+          <a href={record.report_download} target="_blank" rel="noopener noreferrer" key="view">
             下载报告
           </a>
         ) : (
           <span>暂无</span> // 当没有 report_download 时显示“无”
         );
-      }
-      
+      },
     },
     {
       title: '测试环境',
       dataIndex: 'test_env',
       valueType: 'select',
+      valueEnum: {
+        boe: { text: '测试环境', status: 'warning' },
+        online: { text: '线上环境', status: 'success' },
+      },
       fieldProps: {
         options: [
           { label: 'boe', value: '测试' },
@@ -194,44 +164,48 @@ export default () => {
           { label: '定时任务', value: 'cron' },
         ],
       },
-
+      render: (_, record) => {
+        // 检查 test_type 是否存在，不存在则默认返回 '手工测试'
+        const test_type = record.test_type || 'manual'; // 如果没有 test_type，默认值为 'manual'
+        return test_type;
+      },
     },
     {
       title: '测试任务id',
       dataIndex: 'task_id',
       valueType: 'text',
-
-      
     },
-    {
-      title: '测试计划id',
-      dataIndex: 'plan_id',
-      valueType: 'text',
-      tooltip: '只有定时任务才会有值,其余类型为空',
-      render: (_, record) => {
-        return record.plan_id ? (
-          <a
-            href={`/openapitest/caseplandetaile/${record.plan_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            key="view"
-          >
-            {record.plan_id}
-          </a>
-        ) : (
-          <span>无</span> // 当没有 plan_id 时显示“无”
-        ); 
-          
-      }
+    // {
+    //   title: '测试计划id',
+    //   dataIndex: 'plan_id',
+    //   valueType: 'text',
+    //   tooltip: '只有定时任务才会有值,其余类型为空',
+    //   render: (_, record) => {
+    //     return record.plan_id ? (
+    //       <a
+    //         href={`/openapitest/caseplandetaile/${record.plan_id}`}
+    //         target="_blank"
+    //         rel="noopener noreferrer"
+    //         key="view"
+    //       >
+    //         {record.plan_id}
+    //       </a>
+    //     ) : (
+    //       <span>无</span> // 当没有 plan_id 时显示“无”
+    //     );
 
+    //   }
 
-    },
+    // },
     {
       title: '执行测试人员',
       dataIndex: 'test_user',
       valueType: 'text',
-
-      
+      render: (_, record) => {
+        // 检查 test_type 是否存在，不存在则默认返回 '手工测试'
+        const test_user = record.test_user || 'test'; // 如果没有 test_type，默认值为 'manual'
+        return test_user;
+      },
     },
     {
       title: '更新时间',
@@ -259,7 +233,7 @@ export default () => {
         // </a>,
         <a
           onClick={() => {
-            history.push(`/openapitest/resultdetaile/${record.id}`);
+            history.push(`/locust/resultdetaile/${record.id}`);
             console.log('record', record);
             console.log('text', text);
           }}
@@ -291,7 +265,7 @@ export default () => {
               console.log('delete');
               console.log(record);
               (async () => {
-                const res = await deleteProject({ ...record });
+                const res = await deleteLocustResult({ ...record });
                 message.success('删除成功');
                 action?.reload();
                 console.log(res);
@@ -301,7 +275,7 @@ export default () => {
           }}
           menus={[
             { key: 'copy', name: '复制' },
-            //   { key: 'delete', name: '删除' },
+            { key: 'delete', name: '删除' },
           ]}
         />,
       ],
@@ -312,7 +286,7 @@ export default () => {
     <>
       <PageContainer header={{ title: false }}>
         <ProCard>
-          <ProTable<TestRun.GetCaseResultParams, TestRun.GetCaseResultResponse>
+          <ProTable<LocustResult.LocustResultMsg, LocustResult.ListLocustResultResponse>
             columns={columns}
             actionRef={actionRef}
             cardBordered
@@ -320,7 +294,7 @@ export default () => {
             request={async (params, sort, filter) => {
               console.log(sort, filter);
               // await waitTime(20);
-              const res = await getCaseResult(params);
+              const res = await queryLocustResult(params);
               console.log(res);
               return res;
             }}
@@ -366,35 +340,21 @@ export default () => {
             dateFormatter="string"
             headerTitle="测试模块"
             toolBarRender={() => [
-              <Button
-                key="button"
-                icon={<PlusOutlined />}
-                onClick={() => {
-                  // actionRef.current?.reload();
-                  history.push('/openapitest/createcaseplan');
-                }}
-                type="primary"
-              >
-                新建
-              </Button>,
+              // <Button
+              //   key="button"
+              //   icon={<PlusOutlined />}
+              //   onClick={() => {
+              //     // actionRef.current?.reload();
+              //     history.push('/openapitest/createcaseplan');
+              //   }}
+              //   type="primary"
+              // >
+              //   新建
+              // </Button>,
             ]}
           />
         </ProCard>
       </PageContainer>
-
-      <Modal
-        title="确认状态变更"
-        visible={visible}
-        onOk={handleOk}
-        onCancel={() => setVisible(false)}
-      >
-        {currentRecord && (
-          <p>
-            当前状态为: <strong>{currentRecord.is_open}</strong>。您希望将其更改为:
-            <strong>{currentRecord.is_open === 'on' ? 'off' : 'on'}</strong> 吗？
-          </p>
-        )}
-      </Modal>
     </>
   );
 };

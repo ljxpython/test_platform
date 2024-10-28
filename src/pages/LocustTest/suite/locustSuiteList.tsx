@@ -1,5 +1,9 @@
-import { deleteProject, getProjectList, updateProject } from '@/services/test_project';
-import { createSuite,updateSuite,syncSuiteByCaseIds ,deleteSuite,getSuiteList} from '@/services/test_suite';
+import {
+  createLocustSuite,
+  deleteLocustSuite,
+  queryLocustSuite,
+  syncLocustSuiteByCaseIds,
+} from '@/services/locust_suite';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
@@ -21,7 +25,7 @@ export const waitTime = async (time: number = 10) => {
 
 // 也可以看看这个例子,这个是当时学习这部分的时候,第一次敲的代码,包含着ProComponents使用的基础功能
 // src / pages / Goods / protale.tsx
-const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
+const columns: ProColumns<LocustSuite.LocustSuiteMsg>[] = [
   {
     dataIndex: 'index',
     valueType: 'indexBorder',
@@ -33,7 +37,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
     hideInTable: true, // 这个相当于在列表中查找不到,但是可以搜索到这个项目
   },
   {
-    title: '套件名称',
+    title: '压测套件名称',
     dataIndex: 'suite_name',
     copyable: true,
     ellipsis: true,
@@ -53,15 +57,15 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
     ellipsis: true,
     tooltip: '场景过长会自动收缩',
   },
-  {
-    title: '所属项目',
-    dataIndex: 'project',
-    ellipsis: true,
-    copyable: true,
-    render: (text, record) => {
-      return record.project ? record.project.project_name : '无'; // 处理可能的 undefined
-    },
-  },
+  // {
+  //   title: '所属项目',
+  //   dataIndex: 'project',
+  //   ellipsis: true,
+  //   copyable: true,
+  //   render: (text, record) => {
+  //     return record.project ? record.project.project_name : '无'; // 处理可能的 undefined
+  //   },
+  // },
   {
     title: '创建时间',
     key: 'showTime',
@@ -89,8 +93,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
         onClick={() => {
           console.log(record);
           console.log(action);
-          // action?.startEditable?.(record.id);
-          history.push(`/openapitest/syncsuite/${record.id}`);
+          history.push(`/locust/synclocustsuite/${record.id}`);
         }}
       >
         更新
@@ -107,7 +110,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
       </a>,
       <a
         onClick={() => {
-          history.push(`/openapitest/casesuitedetaile/${record.id}`);
+          history.push(`/locust/locustcasesuitedetaile/${record.id}`);
         }}
         target="_blank"
         rel="noopener noreferrer"
@@ -137,7 +140,7 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
             console.log('delete');
             console.log(record);
             (async () => {
-              const res = await deleteSuite({ ...record });
+              const res = await deleteLocustSuite({ ...record });
               message.success('删除成功');
               action?.reload();
               console.log(res);
@@ -161,14 +164,14 @@ export default () => {
   })
   
   return (
-    <ProTable<ProjectApi.ProjectDesc, ProjectApi.ProjectParams>
+    <ProTable<LocustSuite.LocustSuiteMsg, LocustSuite.QueryLocustSuiteResponse>
       columns={columns}
       actionRef={actionRef}
       cardBordered
       request={async (params, sort, filter) => {
         console.log(sort, filter);
         // await waitTime(20);
-        const res = await getSuiteList(params);
+        const res = await queryLocustSuite(params);
         console.log(res);
         return res;
       }}
@@ -176,7 +179,7 @@ export default () => {
         type: 'multiple', //这个是允许多行编辑的意思
         onSave: async (key, row) => {
           console.log(key, row);
-          await updateProject(row);
+          await (row);
           message.success('更新成功');
         },
       }}
@@ -218,7 +221,7 @@ export default () => {
           icon={<PlusOutlined />}
           onClick={() => {
             // actionRef.current?.reload();
-            history.push('/openapitest/createcasesuite');
+            history.push('/locust/createlocustsuite');
           }}
           type="primary"
         >

@@ -366,17 +366,17 @@ export default () => {
             dateFormatter="string"
             headerTitle="测试模块"
             toolBarRender={() => [
-              <Button
-                key="button"
-                icon={<PlusOutlined />}
-                onClick={() => {
-                  // actionRef.current?.reload();
-                  history.push('/openapitest/createcaseplan');
-                }}
-                type="primary"
-              >
-                新建
-              </Button>,
+              // <Button
+              //   key="button"
+              //   icon={<PlusOutlined />}
+              //   onClick={() => {
+              //     // actionRef.current?.reload();
+              //     history.push('/openapitest/createcaseplan');
+              //   }}
+              //   type="primary"
+              // >
+              //   新建
+              // </Button>,
             ]}
           />
         </ProCard>

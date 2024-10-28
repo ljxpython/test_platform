@@ -1,17 +1,16 @@
-import { getProjectList } from '@/services/test_project';
-import { getSuiteList,createSuite } from '@/services/test_suite';
-import { getCase, syncTestCase, getCaseSence } from '@/services/test_case';
+import { getLocustCase } from '@/services/locust_case';
+import { createLocustSuite } from '@/services/locust_suite';
 import {
   PageContainer,
   ProCard,
   ProForm,
-  ProFormText,
   ProFormInstance,
-  ProFormSelect,} from '@ant-design/pro-components';
+  ProFormSelect,
+  ProFormText,
+} from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import { Col, Row, Space, message } from 'antd';
-import { useState, useEffect } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type LayoutType = Parameters<typeof ProForm>[0]['layout'];
 const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
@@ -36,14 +35,14 @@ export default () => {
       : null;
 
   const [casesence, setCasesence] = useState<string[]>([]); // 初始化为空数组
-  const [projectList, setProjectList] = useState<string[]>([]); // 初始化为空数组
-
+  // const [projectList, setProjectList] = useState<string[]>([]); // 初始化为空数组
   const getcasesence = async () => {
     try {
-      let data = await getCaseSence({});
-      console.log(data);
-      console.log('case_sence_list', data.data.case_sence_list);
-      setCasesence(data.data.case_sence_list);
+      let response = await getLocustCase({});
+      console.log(response);
+      const caseScenes = response.data.map((item) => item.case_sence);
+
+      setCasesence(caseScenes);
       // console.log('获取casesence的值', casesence);
     } catch (error) {
       console.error('获取选项失败:', error);
@@ -60,39 +59,11 @@ export default () => {
   useEffect(() => {
     getcasesence();
   }, []);
-  
-
-  const getProject = async () => {
-    try {
-      let data = await getProjectList({});
-      console.log(data);
-      console.log('project_list', data.data);
-      const transformedData = data.data.map((item) => ({
-        value: item.id,
-        label: item.project_name,
-      }));
-      console.log('transformedData', transformedData);
-      setProjectList(transformedData);
-      // console.log('获取project的值', projectList);
-    } catch (error) {
-      console.error('获取选项失败:', error);
-    }
-  };
-  // 下面两个useEffect是用于获取project的值,我到现在也不知道为什么要写两个
-  // 使用 useEffect 监听 casesence 的变化
-  useEffect(() => {
-    console.log('获取projectlist的值', projectList);
-  }, [projectList]); // 依赖于 casesence，任何变化都会打印
-
-  // 在组件加载时调用 getcasesence
-  useEffect(() => {
-    getProject();
-  }, []);
 
   return (
     <PageContainer header={{ title: false }}>
       <ProCard>
-        <ProForm<TestSuite.CreateSuiteBody>
+        <ProForm<LocustSuite.CreateLocustSuiteParams>
           {...formItemLayout}
           layout={formLayoutType}
           submitter={{
@@ -115,11 +86,11 @@ export default () => {
             console.log('validateFields:', val1);
             const val2 = await formRef.current?.validateFieldsReturnFormatValue?.();
             console.log('validateFieldsReturnFormatValue:', val2);
-            const res = await createSuite(values);
+            const res = await createLocustSuite(values);
             console.log(res);
             message.success('提交成功:');
             // 跳转回项目列表页面
-            history.push('/openapitest/casesuitelist');
+            history.push('/locust/locustcasesuitelist');
           }}
           formRef={formRef}
           params={{}}
@@ -147,15 +118,6 @@ export default () => {
               ],
             }}
           />
-          <ProFormSelect
-            key="project"
-            options={projectList}
-            width="md"
-            name="project"
-            label="测试套件所属项目"
-            // mode="multiple" // 是多个值还是单个值
-          />
-
           <ProFormSelect
             key="case_sences"
             options={casesence}

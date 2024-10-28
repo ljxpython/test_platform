@@ -1,6 +1,10 @@
-import { getProjectList } from '@/services/test_project';
-import { getSuiteList,createSuite,syncSuiteByCaseIds } from '@/services/test_suite';
-import { getCase, syncTestCase, getCaseSence } from '@/services/test_case';
+import { getLocustCase, syncLocustCase, deleteLocustCase } from '@/services/locust_case';
+import {
+  createLocustSuite,
+  deleteLocustSuite,
+  queryLocustSuite,
+  syncLocustSuiteByCaseIds,
+} from '@/services/locust_suite';
 import {
   PageContainer,
   ProCard,
@@ -43,10 +47,11 @@ export default () => {
 
   const getcasesence = async () => {
     try {
-      let data = await getCaseSence({});
-      console.log(data);
-      console.log('case_sence_list', data.data.case_sence_list);
-      setCasesence(data.data.case_sence_list);
+      let response = await getLocustCase({});
+      console.log(response);
+      const caseScenes = response.data.map((item) => item.case_sence);
+
+      setCasesence(caseScenes);
       // console.log('获取casesence的值', casesence);
     } catch (error) {
       console.error('获取选项失败:', error);
@@ -65,32 +70,6 @@ export default () => {
   }, []);
   
 
-  const getProject = async () => {
-    try {
-      let data = await getProjectList({});
-      console.log(data);
-      console.log('project_list', data.data);
-      const transformedData = data.data.map((item) => ({
-        value: item.id,
-        label: item.project_name,
-      }));
-      console.log('transformedData', transformedData);
-      setProjectList(transformedData);
-      // console.log('获取project的值', projectList);
-    } catch (error) {
-      console.error('获取选项失败:', error);
-    }
-  };
-  // 下面两个useEffect是用于获取project的值,我到现在也不知道为什么要写两个
-  // 使用 useEffect 监听 casesence 的变化
-  useEffect(() => {
-    console.log('获取projectlist的值', projectList);
-  }, [projectList]); // 依赖于 casesence，任何变化都会打印
-
-  // 在组件加载时调用 getcasesence
-  useEffect(() => {
-    getProject();
-  }, []);
 
   const params = useParams();
   const id = params.id; // 获取具体的 ID
@@ -125,17 +104,17 @@ export default () => {
             console.log('validateFields:', val1);
             const val2 = await formRef.current?.validateFieldsReturnFormatValue?.();
             console.log('validateFieldsReturnFormatValue:', val2);
-            const res = await syncSuiteByCaseIds(values);
+            const res = await syncLocustSuiteByCaseIds(values);
             console.log(res);
             message.success('提交成功:');
             // 跳转回项目列表页面
-            history.push('/openapitest/casesuitelist');
+            history.push('/locust/locustcasesuitelist');
           }}
           formRef={formRef}
           params={{}}
           request={async () => {
             // await waitTime(100);
-            const res = await getSuiteList({ id: id });
+            const res = await queryLocustSuite({ id: id });
             console.log('res1', res);
             let casesen: string[] = [];
 
@@ -152,8 +131,6 @@ export default () => {
             return {
               id: res.data[0].id,
               suite_name: res.data[0].suite_name,
-              projectid: res.data[0].project?.id,
-              projectname: res.data[0].project?.project_name,
               case_sences: casesen,
               describe: res.data[0].describe,
               // useMode: 'chapter',
@@ -177,30 +154,6 @@ export default () => {
               ],
             }}
           />
-          {/* <ProFormDigit
-            key="projectid"
-            width="md"
-            name="projectid"
-            label="所属项目id"
-            disabled
-          />
-          <ProFormText
-            key="projectname"
-            width="md"
-            name="projectname"
-            label="所属项目名称"
-            disabled
-          /> */}
-          <ProFormSelect
-            key="project"
-            options={projectList}
-            width="md"
-            name="projectid"
-            label="所属项目"
-            tooltip="如需改动,则选择相应的项目"
-            // mode="multiple" // 是多个值还是单个值
-          />
-
           <ProFormSelect
             key="case_sences"
             options={casesence}
