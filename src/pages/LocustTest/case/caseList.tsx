@@ -92,12 +92,10 @@ export default () => {
         // <a
         //   key="editable"
         //   onClick={() => {
-        //     console.log(record);
-        //     console.log(action);
-        //     action?.startEditable?.(record.id);
+         
         //   }}
         // >
-        //   编辑
+        //   更新
         // </a>,
         <a
           onClick={() => {
@@ -224,7 +222,7 @@ export default () => {
               }}
               type="primary"
             >
-              同步测试模块
+              同步压测case
             </Button>,
           ]}
         />

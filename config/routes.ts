@@ -231,6 +231,12 @@ export default [
         component: './openapitest/caseResultList',
       },
       {
+        path: '/openapitest/resultdetaile/:id',
+        name: 'resultdetaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './openapitest/caseResultDetail',
+      },
+      {
         path: '/openapitest/test',
         name: 'test',
         hideInMenu: true, // 隐藏菜单
@@ -248,26 +254,75 @@ export default [
         redirect: '/locust/list',
       },
       {
+        // 压测case列表
         path: '/locust/locustcaselist',
         name: 'locustcaselist',
         component: './LocustTest/case/caseList',
       },
       {
+        // 压测case详情
         path: '/locust/locustcasedetaile/:id',
         name: 'locustcasedetaile',
         hideInMenu: true, // 隐藏菜单
         component: './LocustTest/case/caseDetail',
       },
       {
-        path: '/locust/list',
-        name: 'list',
-        component: './LocustTest/List',
+        // 压测suite列表
+        path: '/locust/locustcasesuitelist',
+        name: 'locustsuitelist',
+        component: './LocustTest/suite/locustSuiteList',
       },
       {
-        path: '/locust/add',
-        name: 'add',
-        component: './LocustTest/locustweb',
+        // 压测suite详情
+        path: '/locust/locustcasesuitedetaile/:id',
+        name: 'locustsuitedetaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './LocustTest/suite/locustSuiteDetail',
       },
+      {
+        // 更新压测suite
+        path: '/locust/synclocustsuite/:id',
+        name: 'synclocustsuite',
+        hideInMenu: true, // 隐藏菜单
+        component: './LocustTest/suite/syncLocustSuite',
+      },
+      {
+        // 创建压测suite
+        path: '/locust/createlocustsuite',
+        name: 'createlocustsuite',
+        hideInMenu: true, // 隐藏菜单
+        component: './LocustTest/suite/createLocustSuite',
+      },
+      {
+        // 压测结果详情
+        path: '/locust/resultdetaile/:id',
+        name: 'resultdetaile',
+        hideInMenu: true, // 隐藏菜单
+        component: './LocustTest/result/locustResultDetail',
+      },
+      {
+        // 压测结果列表
+        path: '/locust/resultlist',
+        name: 'resultlist',
+        component: './LocustTest/result/locustResultList',
+      },
+      {
+        // 压测运行
+        path: '/locust/locustrun',
+        name: 'locustrun',
+        // hideInMenu: true, // 隐藏菜单
+        component: './LocustTest/run/locustweb',
+      },
+      // {
+      //   path: '/locust/list',
+      //   name: 'list',
+      //   component: './LocustTest/List',
+      // },
+      // {
+      //   path: '/locust/add',
+      //   name: 'add',
+      //   component: './LocustTest/locustweb',
+      // },
     ],
   },
   {
