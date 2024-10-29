@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown, PageContainer,ProCard } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
-import { Button, message } from 'antd';
+import { Button, message,Alert } from 'antd';
 import { useRef } from 'react';
 import { useState, useEffect } from 'react';
 
@@ -25,6 +25,7 @@ export const waitTime = async (time: number = 10) => {
 
 export default () => {
   const actionRef = useRef<ActionType>();
+  const [visible, setVisible] = useState(true); // 状态来控制公告的显示与否
 
   const columns: ProColumns<TestCase.GetCaseSingle>[] = [
     {
@@ -92,7 +93,7 @@ export default () => {
         // <a
         //   key="editable"
         //   onClick={() => {
-         
+
         //   }}
         // >
         //   更新
@@ -141,7 +142,7 @@ export default () => {
           }}
           menus={[
             { key: 'copy', name: '复制' },
-              { key: 'delete', name: '删除' },
+            { key: 'delete', name: '删除' },
           ]}
         />,
       ],
@@ -149,10 +150,20 @@ export default () => {
   ];
 
   return (
-    <PageContainer
-      header={{ title: false }}
-    >
+    <PageContainer header={{ title: false }}>
       <ProCard>
+        {/* 仅在 visible 为 true 时显示公告 */}
+        {visible && (
+          <Alert
+            message="公告"
+            description="这是一个重要的公告，请注意查看相关信息！"
+            type="info"
+            showIcon
+            closable // 允许关闭
+            onClose={() => setVisible(false)} // 关闭时设置状态为 false
+            style={{ marginBottom: 16 }} // 添加底部间距
+          />
+        )}
         <ProTable<LocustCase.LocustCaseMsg, LocustCase.GetLocustCaseResponse>
           columns={columns}
           actionRef={actionRef}
