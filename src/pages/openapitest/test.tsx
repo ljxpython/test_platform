@@ -1,5 +1,6 @@
-import { Alert, Button, PageContainer, ProCard } from '@ant-design/pro-components';
+import { PageContainer, ProCard } from '@ant-design/pro-components';
 import { useState } from 'react';
+import { Alert, Button, } from 'antd'
 
 const StaticPage = () => {
   const staticPageUrl = 'https://www.coder-ljx.cn:8091';
