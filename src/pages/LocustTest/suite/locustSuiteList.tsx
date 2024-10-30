@@ -48,6 +48,7 @@ export default () => {
       const values = await form.validateFields();
       // 处理接口调用
       const { title, test_env, runType } = values;
+      console.log('values:', values);
       const force = runType === 'force';
       if (currentRecord) {
         const { id } = currentRecord;
@@ -59,6 +60,7 @@ export default () => {
         message.success('压测场景运行成功');
         setVisible(false); // 关闭模态框
         // 跳转到压测运行界面
+        waitTime(10000);
         history.push(`/locust/locustrun`);
       } else {
         // 这里进行接口调用
@@ -296,13 +298,13 @@ export default () => {
           <Form.Item
             name="title"
             label="测试标题"
-            rules={[{ required: true, message: '请输入测试标题' }]}
+            // rules={[{ required: true, message: '请输入测试标题' }]}
           >
-            <Input placeholder="输入测试标题" />
+            <Input placeholder="输入测试标题,可以为空" />
           </Form.Item>
 
           <Form.Item
-            name="force"
+            name="runType"
             label="运行类型"
             rules={[{ required: true, message: '请选择运行类型' }]}
           >

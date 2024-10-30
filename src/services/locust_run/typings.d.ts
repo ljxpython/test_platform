@@ -38,9 +38,17 @@ declare namespace LocustRun {
   interface CheckLocustProcessRequest {
     any;
   }
+
+  export interface CheckLocustProcessMsg {
+	id: number;
+	port: number;
+	title: string;
+	url: string;
+}
   interface CheckLocustProcessResponse {
-    data: string;
-    success: boolean;
+	data: CheckLocustProcessMsg | null;
+	msg: string;
+	success: boolean;
   }
     // /api/locust_test/force_stop_locust_test 强制停止压测任务
   interface ForceStopLocustTestRequest {

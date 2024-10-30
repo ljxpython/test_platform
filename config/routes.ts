@@ -313,11 +313,11 @@ export default [
         // hideInMenu: true, // 隐藏菜单
         component: './LocustTest/run/locustweb',
       },
-      // {
-      //   path: '/locust/list',
-      //   name: 'list',
-      //   component: './LocustTest/List',
-      // },
+      {
+        path: '/locust/list',
+        name: 'list',
+        component: './LocustTest/List',
+      },
       // {
       //   path: '/locust/add',
       //   name: 'add',
