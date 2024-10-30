@@ -100,6 +100,7 @@ export default [
     name: 'admin',
     icon: 'crown',
     access: 'canAdmin',
+    hideInMenu: true, // 隐藏菜单
     routes: [
       {
         path: '/admin',

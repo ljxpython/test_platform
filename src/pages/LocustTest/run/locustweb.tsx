@@ -17,7 +17,7 @@ export const waitTime = async (time: number = 10) => {
 
 
 const StaticPage = () => {
-  const staticPageUrl = 'http://127.0.0.1:8090/';
+  const staticPageUrl = 'https://www.coder-ljx.cn:8091';
   const [title, setTitle] = useState('');
   const [resultid, setResultid] = useState('');
   const [url, setUrl] = useState('');
@@ -27,6 +27,7 @@ const StaticPage = () => {
 
   const reloadIframe = () => {
     // 通过更新状态来重新加载 iframe
+    console.log('reload iframe',url);
     setUrl((prevUrl) => `${prevUrl}?t=${new Date().getTime()}`); // 添加时间戳以强制更新
   };
 
@@ -36,8 +37,7 @@ const StaticPage = () => {
     try {
       const response = await checkLocustProcess();
       console.log(response);
-      console.log(response.data.url);
-      console.log(staticPageUrl);
+      console.log('locust_url:',response.data.url);
       if (response.data.url) {
         setUrlAvailable(true);
         setUrl(response.data.url);
@@ -100,7 +100,7 @@ const StaticPage = () => {
         {urlAvailable === true && (
           <div style={{ height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
             <iframe
-              src={url}
+              src={staticPageUrl}
               style={{ width: '100%', height: '100%', border: 'none' }}
               title="Locust Dashboard"
             />
