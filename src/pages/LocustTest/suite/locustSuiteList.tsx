@@ -59,9 +59,10 @@ export default () => {
         // 假设接口调用成功
         message.success('压测场景运行成功');
         setVisible(false); // 关闭模态框
-        // 跳转到压测运行界面
-        waitTime(10000);
-        history.push(`/locust/locustrun`);
+        // 设置延迟跳转
+        setTimeout(() => {
+          history.push(`/locust/locustrun`);
+        }, 3000); // 3000毫秒（3秒）后跳转
       } else {
         // 这里进行接口调用
       }

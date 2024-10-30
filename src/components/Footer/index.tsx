@@ -24,13 +24,25 @@ const Footer: React.FC = () => {
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/ljxpython?tab=repositories',
+          href: 'https://github.com/ljxpython',
           blankTarget: true,
         },
         {
-          key: 'git仓库',
-          title: 'git仓库',
+          key: 'front',
+          title: '前端仓库',
           href: 'https://github.com/ljxpython/test_palnt',
+          blankTarget: true,
+        },
+        {
+          key: 'server',
+          title: '后端仓库',
+          href: 'https://github.com/ljxpython/flask_plant_srv',
+          blankTarget: true,
+        },
+        {
+          key: 'opentest',
+          title: '接口自动化测试框架',
+          href: 'https://github.com/ljxpython/pytest_framework',
           blankTarget: true,
         },
       ]}

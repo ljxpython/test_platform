@@ -301,12 +301,6 @@ export default [
         component: './LocustTest/result/locustResultDetail',
       },
       {
-        // 压测结果列表
-        path: '/locust/resultlist',
-        name: 'resultlist',
-        component: './LocustTest/result/locustResultList',
-      },
-      {
         // 压测运行
         path: '/locust/locustrun',
         name: 'locustrun',
@@ -314,10 +308,16 @@ export default [
         component: './LocustTest/run/locustweb',
       },
       {
-        path: '/locust/list',
-        name: 'list',
-        component: './LocustTest/List',
+        // 压测结果列表
+        path: '/locust/resultlist',
+        name: 'resultlist',
+        component: './LocustTest/result/locustResultList',
       },
+      // {
+      //   path: '/locust/list',
+      //   name: 'list',
+      //   component: './LocustTest/List',
+      // },
       // {
       //   path: '/locust/add',
       //   name: 'add',

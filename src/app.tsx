@@ -1,4 +1,11 @@
-import { Footer, Question, SelectLang, AvatarDropdown, AvatarName } from '@/components';
+import {
+  Footer,
+  Question,
+  SelectLang,
+  AvatarDropdown,
+  AvatarName,
+} from '@/components';
+import {   EnvironmentSelector } from '@/components/RightContent'
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -51,7 +58,7 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
-    actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
+    actionsRender: () => [<Question key="doc" />,<EnvironmentSelector key="env" />, <SelectLang key="SelectLang" />],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
       title: <AvatarName />,
@@ -59,6 +66,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
+    title: '巧克力测试平台',
     // 关闭水印
     waterMarkProps: {
       // content: initialState?.currentUser?.name,

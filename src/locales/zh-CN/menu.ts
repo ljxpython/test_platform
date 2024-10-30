@@ -32,6 +32,7 @@ export default {
   'menu.openapitest.caselist': '接口测试case',
   'menu.openapitest.casesuitelist': '接口测试套件',
   'menu.openapitest.createcasesuite': '创建接口测试套件',
+  'menu.openapitest.casesuitedtaile': '接口测试套件详情',
   'menu.openapitest.casedetaile': '接口测试case详情',
   'menu.openapitest.runcasesuite': '运行接口测试套件',
   'menu.openapitest.casemoudel': '接口测试模块',
