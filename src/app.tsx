@@ -58,6 +58,7 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    title: '巧克力测试平台',
     actionsRender: () => [<Question key="doc" />,<EnvironmentSelector key="env" />, <SelectLang key="SelectLang" />],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
@@ -66,7 +67,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
-    title: '巧克力测试平台',
     // 关闭水印
     waterMarkProps: {
       // content: initialState?.currentUser?.name,
