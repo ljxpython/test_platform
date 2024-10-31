@@ -153,7 +153,7 @@ export default () => {
     <PageContainer header={{ title: false }}>
       <ProCard>
         {/* 仅在 visible 为 true 时显示公告 */}
-        {visible && (
+        {/* {visible && (
           <Alert
             message="公告"
             description="这是一个重要的公告，请注意查看相关信息！"
@@ -163,7 +163,7 @@ export default () => {
             onClose={() => setVisible(false)} // 关闭时设置状态为 false
             style={{ marginBottom: 16 }} // 添加底部间距
           />
-        )}
+        )} */}
         <ProTable<LocustCase.LocustCaseMsg, LocustCase.GetLocustCaseResponse>
           columns={columns}
           actionRef={actionRef}

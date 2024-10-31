@@ -143,7 +143,7 @@ export default [
   },
   {
     name: 'openapitest',
-    icon: 'smile',
+    icon: 'PartitionOutlined',
     path: '/openapitest',
     routes: [
       {
@@ -247,7 +247,7 @@ export default [
   },
   {
     name: 'locust',
-    icon: 'smile',
+    icon: 'HddOutlined',
     path: '/locust',
     routes: [
       {

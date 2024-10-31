@@ -2,9 +2,9 @@ import { deleteProject, getProjectList, updateProject } from '@/services/test_pr
 import { createSuite,updateSuite,syncSuiteByCaseIds ,deleteSuite,getSuiteList} from '@/services/test_suite';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable, TableDropdown } from '@ant-design/pro-components';
+import { ProTable, TableDropdown,PageContainer,ProCard } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
-import { Button, message, Tooltip } from 'antd';
+import { Button, message, Tooltip,Alert } from 'antd';
 import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 export const waitTimePromise = async (time: number = 10) => {
@@ -156,88 +156,105 @@ const columns: ProColumns<ProjectApi.ProjectDesc>[] = [
 
 export default () => {
   const actionRef = useRef<ActionType>();
-  useEffect(() => {
-    message.info('请不要随意调用删除按钮,因为真的会把我的测试数据删除掉');
-  })
-  
+  // useEffect(() => {
+  //   message.info('请不要随意调用删除按钮,因为真的会把我的测试数据删除掉');
+  // })
+  const [altervisible, setAltervisible] = useState(true); // 状态来控制公告的显示与否
   return (
-    <ProTable<ProjectApi.ProjectDesc, ProjectApi.ProjectParams>
-      columns={columns}
-      actionRef={actionRef}
-      cardBordered
-      request={async (params, sort, filter) => {
-        console.log(sort, filter);
-        // await waitTime(20);
-        const res = await getSuiteList(params);
-        console.log(res);
-        return res;
-      }}
-      editable={{
-        type: 'multiple', //这个是允许多行编辑的意思
-        onSave: async (key, row) => {
-          console.log(key, row);
-          await updateProject(row);
-          message.success('更新成功');
-        },
-      }}
-      columnsState={{
-        persistenceKey: 'pro-table-singe-demos',
-        persistenceType: 'localStorage',
-        defaultValue: {
-          option: { fixed: 'right', disable: true },
-        },
-        onChange(value) {
-          console.log('value: ', value);
-        },
-      }}
-      rowKey="id"
-      search={{
-        labelWidth: 'auto',
-      }}
-      options={{
-        setting: {
-          listsHeight: 400,
-        },
-      }}
-
-      pagination={{
-        defaultCurrent: 1,
-        showSizeChanger: true,
-        onShowSizeChange: (current, pageSize) => {
-          console.log(current, pageSize);
-        },
-        showQuickJumper: true,
-        // pageSize: 5,
-        // onChange: (page) => console.log(page),
-      }}
-      dateFormatter="string"
-      headerTitle="测试套件"
-      toolBarRender={() => [
-        <Button
-          key="button"
-          icon={<PlusOutlined />}
-          onClick={() => {
-            // actionRef.current?.reload();
-            history.push('/openapitest/createcasesuite');
-          }}
-          type="primary"
-        >
-          新建
-        </Button>,
-        // <Tooltip title="根据测试场景,同步case到测试套件">
-        //   <Button
-        //     key="button"
-        //     icon={<PlusOutlined />}
-        //     onClick={() => {
-        //       // actionRef.current?.reload();
-        //       history.push('/project/create');
-        //     }}
-        //     type="primary"
-        //   >
-        //     同步
-        //   </Button>
-        // </Tooltip>,
-      ]}
-    />
+    <>
+      <PageContainer title={false}>
+        <ProCard>
+          {/* 仅在 visible 为 true 时显示公告 */}
+          {altervisible && (
+            <Alert
+              message="使用建议"
+              description="测试环境为本人调试脚本使用,请选择线上环境进行测试"
+              type="info"
+              showIcon
+              closable // 允许关闭
+              onClose={() => setVisible(false)} // 关闭时设置状态为 false
+              style={{ marginBottom: 16 }} // 添加底部间距
+            />
+          )}
+          <ProTable<ProjectApi.ProjectDesc, ProjectApi.ProjectParams>
+            columns={columns}
+            actionRef={actionRef}
+            cardBordered
+            request={async (params, sort, filter) => {
+              console.log(sort, filter);
+              // await waitTime(20);
+              const res = await getSuiteList(params);
+              console.log(res);
+              return res;
+            }}
+            editable={{
+              type: 'multiple', //这个是允许多行编辑的意思
+              onSave: async (key, row) => {
+                console.log(key, row);
+                await updateProject(row);
+                message.success('更新成功');
+              },
+            }}
+            columnsState={{
+              persistenceKey: 'pro-table-singe-demos',
+              persistenceType: 'localStorage',
+              defaultValue: {
+                option: { fixed: 'right', disable: true },
+              },
+              onChange(value) {
+                console.log('value: ', value);
+              },
+            }}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            options={{
+              setting: {
+                listsHeight: 400,
+              },
+            }}
+            pagination={{
+              defaultCurrent: 1,
+              showSizeChanger: true,
+              onShowSizeChange: (current, pageSize) => {
+                console.log(current, pageSize);
+              },
+              showQuickJumper: true,
+              // pageSize: 5,
+              // onChange: (page) => console.log(page),
+            }}
+            dateFormatter="string"
+            headerTitle="测试套件"
+            toolBarRender={() => [
+              <Button
+                key="button"
+                icon={<PlusOutlined />}
+                onClick={() => {
+                  // actionRef.current?.reload();
+                  history.push('/openapitest/createcasesuite');
+                }}
+                type="primary"
+              >
+                新建
+              </Button>,
+              // <Tooltip title="根据测试场景,同步case到测试套件">
+              //   <Button
+              //     key="button"
+              //     icon={<PlusOutlined />}
+              //     onClick={() => {
+              //       // actionRef.current?.reload();
+              //       history.push('/project/create');
+              //     }}
+              //     type="primary"
+              //   >
+              //     同步
+              //   </Button>
+              // </Tooltip>,
+            ]}
+          />
+        </ProCard>
+      </PageContainer>
+    </>
   );
 };

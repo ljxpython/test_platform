@@ -9,7 +9,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown ,PageContainer,ProCard} from '@ant-design/pro-components';
 import { history } from '@umijs/max';
-import { Button, message, Tooltip, Modal, Form, Input, Select } from 'antd';
+import { Button, message, Tooltip, Modal, Form, Input, Select,Alert } from 'antd';
 import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 export const waitTimePromise = async (time: number = 10) => {
@@ -31,6 +31,7 @@ export default () => {
   useEffect(() => {
     // message.info('请不要随意调用删除按钮,因为真的会把我的测试数据删除掉');
   });
+  const [altervisible, setAltervisible] = useState(true); // 状态来控制公告的显示与否
 
   const { Option } = Select;
   const [visible, setVisible] = useState(false);
@@ -68,9 +69,7 @@ export default () => {
       }
     } catch (error) {
       console.error('表单验证失败:', error);
-    };
-
-    
+    }
   };
 
   // 也可以看看这个例子,这个是当时学习这部分的时候,第一次敲的代码,包含着ProComponents使用的基础功能
@@ -142,11 +141,11 @@ export default () => {
         <a
           onClick={() => {
             showModal(record);
-          }
-          }
+          }}
           target="_blank"
           rel="noopener noreferrer"
-          key="runlocust">
+          key="runlocust"
+        >
           运行
         </a>,
         <a
@@ -202,6 +201,24 @@ export default () => {
     <>
       <PageContainer header={{ title: false }}>
         <ProCard>
+          {/* 仅在 visible 为 true 时显示公告 */}
+          {altervisible && (
+            <Alert
+              message="使用建议"
+              description={
+                <>
+                  测试环境为本人调试脚本使用,请选择线上环境进行测试
+                  <br />
+                  压测的并发值不要设置太大,本人的服务器配置较低,承载不了太高并发,谅解
+                </>
+              }
+              type="info"
+              showIcon
+              closable // 允许关闭
+              onClose={() => setVisible(false)} // 关闭时设置状态为 false
+              style={{ marginBottom: 16 }} // 添加底部间距
+            />
+          )}
           <ProTable<LocustSuite.LocustSuiteMsg, LocustSuite.QueryLocustSuiteResponse>
             columns={columns}
             actionRef={actionRef}

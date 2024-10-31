@@ -1,6 +1,6 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { SelectLang as UmiSelectLang } from '@umijs/max';
-import { Select, SelectProps } from 'antd'; // 导入 Select 组件
+import { Select, SelectProps,Tooltip } from 'antd'; // 导入 Select 组件
 import React, { useState } from 'react';
 
 export type SiderTheme = 'light' | 'dark';
@@ -26,6 +26,8 @@ export const EnvironmentSelector = () => {
   };
 
   return (
+    <Tooltip title="请使用线上环境,测试环境为本人调试使用">
+
     <Select
       value={environment}
       onChange={handleChange}
@@ -33,7 +35,8 @@ export const EnvironmentSelector = () => {
     >
       <Select.Option value="test">测试环境</Select.Option>
       <Select.Option value="production">线上环境</Select.Option>
-    </Select>
+      </Select>
+    </Tooltip>
   );
 };
 

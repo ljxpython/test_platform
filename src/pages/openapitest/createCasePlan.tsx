@@ -20,7 +20,7 @@ import {
 import { CopyOutlined } from '@ant-design/icons';
 
 import { history } from '@umijs/max';
-import { Col, Row, Space, message, Descriptions, Tooltip, Button } from 'antd';
+import { Col, Row, Space, message, Descriptions, Tooltip, Button,Alert } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
 type LayoutType = Parameters<typeof ProForm>[0]['layout'];
@@ -43,27 +43,25 @@ export default () => {
           labelCol: { span: 4 },
           wrapperCol: { span: 14 },
         }
-          : null;
-    
+      : null;
 
-    
-    const [suiteList, setSuiteList] = useState<string[]>([]); // 初始化为空数组
+  const [suiteList, setSuiteList] = useState<string[]>([]); // 初始化为空数组
 
   const [casesence, setCasesence] = useState<string[]>([]); // 初始化为空数组
   const [projectList, setProjectList] = useState<string[]>([]); // 初始化为空数组
 
-//   const getcasesence = async () => {
-//     try {
-//       let data = await getCaseSence({});
-//       console.log(data);
-//       console.log('case_sence_list', data.data.case_sence_list);
-//       setCasesence(data.data.case_sence_list);
-//       // console.log('获取casesence的值', casesence);
-//     } catch (error) {
-//       console.error('获取选项失败:', error);
-//     }
-//   };
-    
+  //   const getcasesence = async () => {
+  //     try {
+  //       let data = await getCaseSence({});
+  //       console.log(data);
+  //       console.log('case_sence_list', data.data.case_sence_list);
+  //       setCasesence(data.data.case_sence_list);
+  //       // console.log('获取casesence的值', casesence);
+  //     } catch (error) {
+  //       console.error('获取选项失败:', error);
+  //     }
+  //   };
+
   const getSuite = async () => {
     try {
       let data = await getSuiteList({});
@@ -80,58 +78,71 @@ export default () => {
       console.error('获取选项失败:', error);
     }
   };
-    // 下面两个useEffect是用于获取suite的值,我到现在也不知道为什么要写两个
+  // 下面两个useEffect是用于获取suite的值,我到现在也不知道为什么要写两个
   // 使用 useEffect 监听 casesence 的变化
   useEffect(() => {
     console.log('获取suite的值', suiteList);
   }, [suiteList]); // 依赖于 casesence，任何变化都会打印
 
-    // 在组件加载时调用 getcasesence
+  // 在组件加载时调用 getcasesence
   useEffect(() => {
     getSuite();
   }, []);
 
-//   // 下面两个useEffect是用于获取casesence的值,我到现在也不知道为什么要写两个
-//   // 使用 useEffect 监听 casesence 的变化
-//   useEffect(() => {
-//     console.log('获取casesence的值', casesence);
-//   }, [casesence]); // 依赖于 casesence，任何变化都会打印
+  //   // 下面两个useEffect是用于获取casesence的值,我到现在也不知道为什么要写两个
+  //   // 使用 useEffect 监听 casesence 的变化
+  //   useEffect(() => {
+  //     console.log('获取casesence的值', casesence);
+  //   }, [casesence]); // 依赖于 casesence，任何变化都会打印
 
-//   // 在组件加载时调用 getcasesence
-//   useEffect(() => {
-//     getcasesence();
-//   }, []);
+  //   // 在组件加载时调用 getcasesence
+  //   useEffect(() => {
+  //     getcasesence();
+  //   }, []);
 
-//   const getProject = async () => {
-//     try {
-//       let data = await getProjectList({});
-//       console.log(data);
-//       console.log('project_list', data.data);
-//       const transformedData = data.data.map((item) => ({
-//         value: item.id,
-//         label: item.project_name,
-//       }));
-//       console.log('transformedData', transformedData);
-//       setProjectList(transformedData);
-//       // console.log('获取project的值', projectList);
-//     } catch (error) {
-//       console.error('获取选项失败:', error);
-//     }
-//   };
-//   // 下面两个useEffect是用于获取project的值,我到现在也不知道为什么要写两个
-//   // 使用 useEffect 监听 casesence 的变化
-//   useEffect(() => {
-//     console.log('获取projectlist的值', projectList);
-//   }, [projectList]); // 依赖于 casesence，任何变化都会打印
+  //   const getProject = async () => {
+  //     try {
+  //       let data = await getProjectList({});
+  //       console.log(data);
+  //       console.log('project_list', data.data);
+  //       const transformedData = data.data.map((item) => ({
+  //         value: item.id,
+  //         label: item.project_name,
+  //       }));
+  //       console.log('transformedData', transformedData);
+  //       setProjectList(transformedData);
+  //       // console.log('获取project的值', projectList);
+  //     } catch (error) {
+  //       console.error('获取选项失败:', error);
+  //     }
+  //   };
+  //   // 下面两个useEffect是用于获取project的值,我到现在也不知道为什么要写两个
+  //   // 使用 useEffect 监听 casesence 的变化
+  //   useEffect(() => {
+  //     console.log('获取projectlist的值', projectList);
+  //   }, [projectList]); // 依赖于 casesence，任何变化都会打印
 
-//   // 在组件加载时调用 getcasesence
-//   useEffect(() => {
-//     getProject();
-//   }, []);
+  //   // 在组件加载时调用 getcasesence
+  //   useEffect(() => {
+  //     getProject();
+  //   }, []);
+  const [altervisible, setAltervisible] = useState(true); // 状态来控制公告的显示与否
 
   return (
     <PageContainer header={{ title: false }}>
       <ProCard>
+        {/* 仅在 visible 为 true 时显示公告 */}
+        {altervisible && (
+          <Alert
+            message="使用建议"
+            description="测试环境为本人调试脚本使用,请选择线上环境进行测试"
+            type="info"
+            showIcon
+            closable // 允许关闭
+            onClose={() => setVisible(false)} // 关闭时设置状态为 false
+            style={{ marginBottom: 16 }} // 添加底部间距
+          />
+        )}
         <ProForm<TestPlan.CreateCasePlanBody>
           {...formItemLayout}
           layout={formLayoutType}

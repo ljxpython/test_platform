@@ -12,7 +12,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProCard, ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
-import { Button, message, Modal } from 'antd';
+import { Button, message, Modal ,Alert} from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
 export const waitTimePromise = async (time: number = 10) => {
@@ -52,43 +52,38 @@ export default () => {
   useEffect(() => {
     getcasesence();
   }, []);
-    
 
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [altervisible, setAltervisible] = useState(true); // 状态来控制公告的显示与否
 
+  const [visible, setVisible] = useState(false);
+  const [currentRecord, setCurrentRecord] = useState(null);
 
+  const handleOpenModal = (record) => {
+    setCurrentRecord(record);
+    setVisible(true);
+  };
 
-
-
-const [visible, setVisible] = useState(false);
-const [currentRecord, setCurrentRecord] = useState(null);
-
-const handleOpenModal = (record) => {
-      setCurrentRecord(record);
-      setVisible(true);
-    };
-
-const handleOk = async () => {
-      if (currentRecord) {
-        // 调用更新状态的接口
-          const newState = currentRecord.is_open === 'on' ? 'off' : 'on';
-          const res = await setCaseResultByCron({
-            id: currentRecord.id,
-            is_open: newState,
-          }); 
-        // 这里替换为你的更新状态接口调用
-        try {
-            message.success(`状态已更新为: ${newState}`);
-            // 刷新
-            actionRef.current?.reload();
-        } catch (error) {
-          message.error('更新状态失败');
-        }
-        setVisible(false);
+  const handleOk = async () => {
+    if (currentRecord) {
+      // 调用更新状态的接口
+      const newState = currentRecord.is_open === 'on' ? 'off' : 'on';
+      const res = await setCaseResultByCron({
+        id: currentRecord.id,
+        is_open: newState,
+      });
+      // 这里替换为你的更新状态接口调用
+      try {
+        message.success(`状态已更新为: ${newState}`);
+        // 刷新
+        actionRef.current?.reload();
+      } catch (error) {
+        message.error('更新状态失败');
       }
-    };
-
+      setVisible(false);
+    }
+  };
 
   const columns: ProColumns<TestCase.GetCaseSingle>[] = [
     {
@@ -138,8 +133,7 @@ const handleOk = async () => {
           { label: 'boe', value: '测试' },
           { label: 'online', value: '线上' },
         ],
-        },
-      
+      },
     },
     {
       title: '开启状态',
@@ -150,22 +144,21 @@ const handleOk = async () => {
           { label: '开启', value: 'off' },
           { label: '关闭', value: 'on' },
         ],
-        },
+      },
       render: (_, record) => {
         console.log('record', record);
-          return (
-            <Button
+        return (
+          <Button
             //   type="primary"
-              onClick={() => {
-                //   console.log('record', record);
-                  handleOpenModal(record)
-              }}
-            >
-              {record.is_open}
-            </Button>
+            onClick={() => {
+              //   console.log('record', record);
+              handleOpenModal(record);
+            }}
+          >
+            {record.is_open}
+          </Button>
         );
       },
-      
     },
     {
       title: '测试cron',
@@ -256,93 +249,105 @@ const handleOk = async () => {
     },
   ];
 
-    return (
-      <>
-        <PageContainer header={{ title: false }}>
-          <ProCard>
-            <ProTable<TestPlan.ListCasePlanMsg, TestPlan.ListCasePlanResponse>
-              columns={columns}
-              actionRef={actionRef}
-              cardBordered
-              scroll={{ x: 'max-content' }} // 设置水平滚动
-              request={async (params, sort, filter) => {
-                console.log(sort, filter);
-                // await waitTime(20);
-                const res = await listCasePlant(params);
-                console.log(res);
-                return res;
-              }}
-              editable={{
-                type: 'multiple', //这个是允许多行编辑的意思
-                onSave: async (key, row) => {
-                  console.log('key:', key);
-                  console.log('row:', row);
-                  //   console.log(key, row);
-                  await updateTestMoudle(row);
-                  message.success('更新成功');
-                },
-              }}
-              columnsState={{
-                persistenceKey: 'pro-table-singe-demos',
-                persistenceType: 'localStorage',
-                defaultValue: {
-                  option: { fixed: 'right', disable: true },
-                },
-                onChange(value) {
-                  // console.log('value: ', value);
-                },
-              }}
-              rowKey="id"
-              search={{
-                labelWidth: 'auto',
-              }}
-              options={{
-                setting: {
-                  listsHeight: 400,
-                },
-              }}
-              pagination={{
-                defaultCurrent: 1,
-                showSizeChanger: true,
-                onShowSizeChange: (current, pageSize) => {
-                  // console.log(current, pageSize);
-                },
-                showQuickJumper: true,
-                // pageSize: 5,
-                // onChange: (page) => console.log(page),
-              }}
-              dateFormatter="string"
-              headerTitle="测试模块"
-              toolBarRender={() => [
-                <Button
-                  key="button"
-                  icon={<PlusOutlined />}
-                  onClick={() => {
-                    // actionRef.current?.reload();
-                    history.push('/openapitest/createcaseplan');
-                  }}
-                  type="primary"
-                >
-                  新建
-                </Button>,
-              ]}
+  return (
+    <>
+      <PageContainer header={{ title: false }}>
+        <ProCard>
+          {/* 仅在 visible 为 true 时显示公告 */}
+          {altervisible && (
+            <Alert
+              message="使用建议"
+              description="测试环境为本人调试脚本使用,请选择线上环境进行测试"
+              type="info"
+              showIcon
+              closable // 允许关闭
+              onClose={() => setVisible(false)} // 关闭时设置状态为 false
+              style={{ marginBottom: 16 }} // 添加底部间距
             />
-          </ProCard>
-        </PageContainer>
-
-        <Modal
-          title="确认状态变更"
-          visible={visible}
-          onOk={handleOk}
-          onCancel={() => setVisible(false)}
-        >
-          {currentRecord && (
-            <p>
-              当前状态为: <strong>{currentRecord.is_open}</strong>。您希望将其更改为:
-              <strong>{currentRecord.is_open === 'on' ? 'off' : 'on'}</strong> 吗？
-            </p>
           )}
-        </Modal>
-      </>
-    );
+          <ProTable<TestPlan.ListCasePlanMsg, TestPlan.ListCasePlanResponse>
+            columns={columns}
+            actionRef={actionRef}
+            cardBordered
+            scroll={{ x: 'max-content' }} // 设置水平滚动
+            request={async (params, sort, filter) => {
+              console.log(sort, filter);
+              // await waitTime(20);
+              const res = await listCasePlant(params);
+              console.log(res);
+              return res;
+            }}
+            editable={{
+              type: 'multiple', //这个是允许多行编辑的意思
+              onSave: async (key, row) => {
+                console.log('key:', key);
+                console.log('row:', row);
+                //   console.log(key, row);
+                await updateTestMoudle(row);
+                message.success('更新成功');
+              },
+            }}
+            columnsState={{
+              persistenceKey: 'pro-table-singe-demos',
+              persistenceType: 'localStorage',
+              defaultValue: {
+                option: { fixed: 'right', disable: true },
+              },
+              onChange(value) {
+                // console.log('value: ', value);
+              },
+            }}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            options={{
+              setting: {
+                listsHeight: 400,
+              },
+            }}
+            pagination={{
+              defaultCurrent: 1,
+              showSizeChanger: true,
+              onShowSizeChange: (current, pageSize) => {
+                // console.log(current, pageSize);
+              },
+              showQuickJumper: true,
+              // pageSize: 5,
+              // onChange: (page) => console.log(page),
+            }}
+            dateFormatter="string"
+            headerTitle="测试模块"
+            toolBarRender={() => [
+              <Button
+                key="button"
+                icon={<PlusOutlined />}
+                onClick={() => {
+                  // actionRef.current?.reload();
+                  history.push('/openapitest/createcaseplan');
+                }}
+                type="primary"
+              >
+                新建
+              </Button>,
+            ]}
+          />
+        </ProCard>
+      </PageContainer>
+
+      <Modal
+        title="确认状态变更"
+        visible={visible}
+        onOk={handleOk}
+        onCancel={() => setVisible(false)}
+      >
+        {currentRecord && (
+          <p>
+            当前状态为: <strong>{currentRecord.is_open}</strong>。您希望将其更改为:
+            <strong>{currentRecord.is_open === 'on' ? 'off' : 'on'}</strong> 吗？
+          </p>
+        )}
+      </Modal>
+    </>
+  );
 };
