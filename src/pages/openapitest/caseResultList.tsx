@@ -123,7 +123,7 @@ export default () => {
           valueType: 'text',
           width: 100,
           valueEnum: {
-            success: { text: '成功', status: 'Success' },
+            PASS: { text: '成功', status: 'Success' },
             FAIL: { text: '失败', status: 'Error' },
           },
         
