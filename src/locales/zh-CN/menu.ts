@@ -27,6 +27,7 @@ export default {
   'menu.locust.resultdetaile': '压测结果详情',
   'menu.locust.resultlist': '压测结果',
   'menu.locust.locustrun': '压测运行',
+  'menu.locust.locustmonitor': '压测监控',
 
   'menu.openapitest': '接口测试',
   'menu.openapitest.caselist': '接口测试case',

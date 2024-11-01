@@ -314,6 +314,13 @@ export default [
         name: 'resultlist',
         component: './LocustTest/result/locustResultList',
       },
+      {
+        // 压测监控
+        path: '/locust/locustmonitor',
+        name: 'locustmonitor',
+        // hideInMenu: true, // 隐藏菜单
+        component: './LocustTest/run/monitor',
+      },
       // {
       //   path: '/locust/list',
       //   name: 'list',
