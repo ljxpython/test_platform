@@ -5,7 +5,7 @@ import {
   AvatarDropdown,
   AvatarName,
 } from '@/components';
-import {   EnvironmentSelector } from '@/components/RightContent'
+import {   EnvironmentSelector,PersonalInfo } from '@/components/RightContent'
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -64,6 +64,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       <Question key="doc" />,
       <EnvironmentSelector key="env" />,
       <SelectLang key="SelectLang" />,
+      <PersonalInfo key="personalInfo" />,
     ],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
@@ -113,6 +114,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         ]
       : [],
     menuHeaderRender: undefined,
+    menu: {
+      defaultOpenAll: true, // 默认展开所有菜单
+    },
+
+    defaultCollapsed: true, // 是否默认收起菜单，true 为收起，false 为展开，默认 false
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态

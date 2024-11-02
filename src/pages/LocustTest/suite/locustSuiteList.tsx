@@ -58,7 +58,7 @@ export default () => {
         // 把id的key修改为locustsuite
         await runLocustTest({ title, test_env, force, locustsuite: id });
         // 假设接口调用成功
-        message.success('压测场景运行成功');
+        message.success('压测场景运行成功,请耐心等待页面跳转');
         setVisible(false); // 关闭模态框
         // 设置延迟跳转
         setTimeout(() => {
@@ -207,7 +207,8 @@ export default () => {
               message="使用建议"
               description={
                 <>
-                  测试环境为本人调试脚本使用,请选择线上环境进行测试
+                  请不要随意删除测试数据,以免影响其他用户使用
+                  {/* 测试环境为本人调试脚本使用,请选择线上环境进行测试 */}
                   <br />
                   压测的并发值不要设置太大,本人的服务器配置较低,承载不了太高并发,谅解
                 </>

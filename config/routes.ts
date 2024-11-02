@@ -309,18 +309,19 @@ export default [
         component: './LocustTest/run/locustweb',
       },
       {
-        // 压测结果列表
-        path: '/locust/resultlist',
-        name: 'resultlist',
-        component: './LocustTest/result/locustResultList',
-      },
-      {
         // 压测监控
         path: '/locust/locustmonitor',
         name: 'locustmonitor',
         // hideInMenu: true, // 隐藏菜单
         component: './LocustTest/run/monitor',
       },
+      {
+        // 压测结果列表
+        path: '/locust/resultlist',
+        name: 'resultlist',
+        component: './LocustTest/result/locustResultList',
+      },
+
       // {
       //   path: '/locust/list',
       //   name: 'list',

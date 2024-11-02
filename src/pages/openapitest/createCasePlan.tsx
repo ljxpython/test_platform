@@ -135,7 +135,7 @@ export default () => {
         {altervisible && (
           <Alert
             message="使用建议"
-            description="测试环境为本人调试脚本使用,请选择线上环境进行测试"
+            description="请不要随意删除测试数据,因为数据非mock,会直接删除相关数据"
             type="info"
             showIcon
             closable // 允许关闭
