@@ -125,9 +125,10 @@ export default () => {
             console.log('validateFields:', val1);
             const val2 = await formRef.current?.validateFieldsReturnFormatValue?.();
             console.log('validateFieldsReturnFormatValue:', val2);
+            console.log('values2', values);
             const res = await syncSuiteByCaseIds(values);
             console.log(res);
-            message.success('提交成功:');
+            message.success('提交成功');
             // 跳转回项目列表页面
             history.push('/openapitest/casesuitelist');
           }}

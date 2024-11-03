@@ -88,7 +88,7 @@ export default () => {
             console.log('validateFieldsReturnFormatValue:', val2);
             const res = await createLocustSuite(values);
             console.log(res);
-            message.success('提交成功:');
+            message.success('提交成功');
             // 跳转回项目列表页面
             history.push('/locust/locustcasesuitelist');
           }}

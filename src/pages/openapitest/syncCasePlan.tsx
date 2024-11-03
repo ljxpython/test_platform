@@ -99,9 +99,11 @@ export default () => {
             console.log('validateFields:', val1);
             const val2 = await formRef.current?.validateFieldsReturnFormatValue?.();
             console.log('validateFieldsReturnFormatValue:', val2);
+            // value的keyvalue增加update_cron:true
+            (values as any).update_cron = true;
             const res = await setCaseResultByCron(values);
             console.log(res);
-            message.success('提交成功:');
+            message.success('提交成功');
             // 跳转回项目列表页面
             history.push('/openapitest/caseplanlist');
           }}

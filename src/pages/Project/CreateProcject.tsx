@@ -50,7 +50,7 @@ export default () => {
             console.log(values);
             const res = await createProject(values);
             console.log(res);
-            message.success('提交成功:');
+            message.success('提交成功');
             // 跳转回项目列表页面
             history.push('/project/list');
           }}

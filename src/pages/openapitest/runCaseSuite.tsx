@@ -134,7 +134,7 @@ export default () => {
               // message.success(res.data.msg);
             // }
             message.success(res.msg);
-            message.success('提交成功:');
+            message.success('提交成功');
             // 跳转回项目列表页面
             history.push('/openapitest/casesuitelist');
           }}

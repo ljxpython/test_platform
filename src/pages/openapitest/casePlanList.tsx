@@ -109,7 +109,7 @@ export default () => {
       title: '所属测试套件',
       dataIndex: 'suite',
       render: (_, record) => {
-        console.log('record', record);
+        // console.log('record', record);
         return (
           <a
             onClick={() => {
@@ -146,7 +146,7 @@ export default () => {
         ],
       },
       render: (_, record) => {
-        console.log('record', record);
+        // console.log('record', record);
         return (
           <Button
             //   type="primary"
