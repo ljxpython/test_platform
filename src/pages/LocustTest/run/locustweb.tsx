@@ -71,7 +71,7 @@ const StaticPage = () => {
       const response = await stopLocustTest();
       console.log(response);
       if (response.data.id) {
-        message.success('压测已停止 套件id为' + response.data.id);
+        message.success('压测已停止 结果id为' + response.data.id);
       } else {
         message.error(response.data.msg);
       }
@@ -83,7 +83,7 @@ const StaticPage = () => {
   return (
     <PageContainer title={false}>
       <ProCard
-        title={title ? ` 套件ID: ${resultid} 压测场景：${title}` : 'Locust 压测报告'}
+        title={title ? ` 结果ID: ${resultid} 压测场景：${title}` : 'Locust 压测报告'}
         style={{ marginBottom: 16 }}
       >
         <div style={{ marginBottom: 16 }}>
