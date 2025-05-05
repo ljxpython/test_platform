@@ -4,7 +4,7 @@ import { getLocustCase, syncLocustCase, deleteLocustCase } from '@/services/locu
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProCard, ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
-import { Button, message, Modal } from 'antd';
+import { Button, message, Modal,Alert } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
 export const waitTimePromise = async (time: number = 10) => {
@@ -22,21 +22,20 @@ export const waitTime = async (time: number = 10) => {
 export default () => {
   const actionRef = useRef<ActionType>();
   const [casesence, setCasesence] = useState<string[]>([]); // 初始化为空数组
+  const [altervisible, setAltervisible] = useState(true); // 状态来控制公告的显示与否
 
+  const getcasesence = async () => {
+    try {
+      let response = await getLocustCase({});
+      console.log(response);
+      const caseScenes = response.data.map((item) => item.case_sence);
 
-
-const getcasesence = async () => {
-  try {
-    let response = await getLocustCase({});
-    console.log(response);
-    const caseScenes = response.data.map((item) => item.case_sence);
-
-    setCasesence(caseScenes);
-    // console.log('获取casesence的值', casesence);
-  } catch (error) {
-    console.error('获取选项失败:', error);
-  }
-};
+      setCasesence(caseScenes);
+      // console.log('获取casesence的值', casesence);
+    } catch (error) {
+      console.error('获取选项失败:', error);
+    }
+  };
 
   // 下面两个useEffect是用于获取casesence的值,我到现在也不知道为什么要写两个
   // 使用 useEffect 监听 casesence 的变化
@@ -54,7 +53,6 @@ const getcasesence = async () => {
   const [visible, setVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
- 
   const columns: ProColumns<LocustResult.LocustResultMsg>[] = [
     {
       dataIndex: 'index',
@@ -285,6 +283,25 @@ const getcasesence = async () => {
   return (
     <>
       <PageContainer header={{ title: false }}>
+        {/* 仅在 visible 为 true 时显示公告 */}
+        {altervisible && (
+          <Alert
+            message="使用建议"
+            description={
+              <>
+                请不要随意删除测试数据,因为数据非mock,会直接删除相关数据
+                <br />
+                有些测试报告可能无法正常打开,因为服务器空间有限(存储将满),删除了服务器中的相关测试报告
+                <br />
+              </>
+            }
+            type="info"
+            showIcon
+            closable // 允许关闭
+            onClose={() => setVisible(false)} // 关闭时设置状态为 false
+            style={{ marginBottom: 16 }} // 添加底部间距
+          />
+        )}
         <ProCard>
           <ProTable<LocustResult.LocustResultMsg, LocustResult.ListLocustResultResponse>
             columns={columns}
