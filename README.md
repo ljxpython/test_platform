@@ -70,11 +70,11 @@ npm install
 npm run start:dev
 
 # 后端启动 (新终端)
-git clone https://github.com/ljxpython/test_platform.git
+git clone https://github.com/ljxpython/flask_platform_srv.git
 pip install -r requirements.txt
 python3 main.py
 
-# 访问: http://localhost:8000
+# 访问: http://localhost:5000
 ```
 
 ## 🎪 功能特性
